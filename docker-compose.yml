@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+  server:
+    network_mode: host
+    build: server
+    env_file: server/.env
+    environment:
+      PORT: 4120
+      FRONTEND_LOCATION: http://localhost:5173
+      OAUTH_ISSUER: http://localhost:4130
+    depends_on:
+      - oauth_emulator
+  oauth_emulator:
+    network_mode: host
+    build: oauth-emulator
+    ports:
+      - "4130:4130"
+    environment:
+      PORT: 4130
+      SERVER_EMULATOR_URL: http://localhost:4130
+  frontend:
+    network_mode: host
+    build:
+      context: client
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./client/src:/app/src
