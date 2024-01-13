@@ -28,7 +28,7 @@ func (a *Auth) loginHandler(w http.ResponseWriter, req *http.Request) {
 	cookie := http.Cookie{Name: "state", Value: state, Expires: time.Now().AddDate(0, 0, 1)}
 	http.SetCookie(w, &cookie)
 
-	http.Redirect(w, req, a.oauthConfig.AuthCodeURL(state), http.StatusTemporaryRedirect)
+	http.Redirect(w, req, a.oauthConfig.AuthCodeURL(state, oauth2.SetAuthURLParam("response_mode", "post_form")), http.StatusTemporaryRedirect)
 }
 
 func generateRandomState() (string, error) {
@@ -72,7 +72,7 @@ func (a *Auth) callbackHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	a.setSession(w, session)
+	a.setSession(req.Context(), w, session)
 
 	http.Redirect(w, req, "/", http.StatusTemporaryRedirect)
 }
@@ -87,10 +87,13 @@ func (a *Auth) getCallbackToken(req *http.Request) (*oauth2.Token, error) {
 		return nil, fmt.Errorf("invalid state parameter")
 	}
 
-	token, err := a.oauthConfig.Exchange(req.Context(), req.URL.Query().Get("code"))
+	code := req.URL.Query().Get("code")
+
+	token, err := a.oauthConfig.Exchange(req.Context(), code)
 	if err != nil {
 		return nil, fmt.Errorf("failed to exchange an authorization code for a token: %w", err)
 	}
+
 	return token, nil
 }
 

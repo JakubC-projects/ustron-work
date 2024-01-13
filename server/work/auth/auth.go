@@ -5,13 +5,14 @@ import (
 	"fmt"
 
 	"github.com/coreos/go-oidc"
-	"github.com/gorilla/securecookie"
+	"github.com/jakubc-projects/ustron-work/server/work"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
 type Config struct {
 	ClientId, ClientSecret, Issuer, Host string
+	SessionService                       work.SessionService
 }
 
 type Auth struct {
@@ -19,8 +20,8 @@ type Auth struct {
 	oauthConfig          *oauth2.Config
 	logoutEndpoint       string
 	clientCredentialsCfg *clientcredentials.Config
-	cookieEncryption     *securecookie.SecureCookie
 	idTokenVerifier      *oidc.IDTokenVerifier
+	sessionService       work.SessionService
 }
 
 func New(cfg Config) *Auth {
@@ -29,18 +30,21 @@ func New(cfg Config) *Auth {
 		panic(err)
 	}
 
+	endpoint := provider.Endpoint()
+	endpoint.AuthStyle = oauth2.AuthStyleInParams
+
 	return &Auth{
 		config: cfg,
 		oauthConfig: &oauth2.Config{
 			ClientID:     cfg.ClientId,
 			ClientSecret: cfg.ClientSecret,
 			RedirectURL:  fmt.Sprintf("%s/callback", cfg.Host),
-			Endpoint:     provider.Endpoint(),
-			Scopes:       []string{"openid", "profile", "roles"},
+			Endpoint:     endpoint,
+			Scopes:       []string{"openid", "profile"},
 		},
-		logoutEndpoint:   fmt.Sprintf("%sv2/logout", cfg.Issuer),
-		cookieEncryption: securecookie.New([]byte(cfg.ClientSecret), nil).SetSerializer(securecookie.JSONEncoder{}),
-		idTokenVerifier:  provider.Verifier(&oidc.Config{ClientID: cfg.ClientId, SkipIssuerCheck: true}),
+		logoutEndpoint:  fmt.Sprintf("%sv2/logout", cfg.Issuer),
+		sessionService:  cfg.SessionService,
+		idTokenVerifier: provider.Verifier(&oidc.Config{ClientID: cfg.ClientId, SkipIssuerCheck: true}),
 	}
 }
 

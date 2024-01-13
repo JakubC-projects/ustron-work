@@ -8,8 +8,4 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main main.go
 
-## Deploy
-FROM alpine:3.15
-WORKDIR /
-COPY --from=build /app/main /usr/bin/
-ENTRYPOINT ["main"]
+ENTRYPOINT ["./main"]

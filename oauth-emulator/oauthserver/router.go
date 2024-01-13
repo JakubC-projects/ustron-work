@@ -64,8 +64,6 @@ type tokenRequest struct {
 }
 
 func (s *Server) token(w http.ResponseWriter, req *http.Request) {
-	time.Sleep(300 * time.Millisecond)
-
 	if err := req.ParseForm(); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -87,7 +85,7 @@ func (s *Server) token(w http.ResponseWriter, req *http.Request) {
 	}
 
 	token, err := s.newToken(TokenPayload{
-		Issuer:    s.serverUrl + "/",
+		Issuer:    s.serverUrl,
 		Audience:  body.ClientId,
 		Subject:   personUid.String(),
 		PersonUid: personUid,
@@ -113,9 +111,9 @@ func (s *Server) configuration(w http.ResponseWriter, req *http.Request) {
 
 	response := OidcDiscovery{
 		Issuer:                s.serverUrl,
-		AuthorizationEndpoint: fmt.Sprintf("%s/authorize", s.serverUrl),
-		TokenEndpoint:         fmt.Sprintf("%s/oauth/token", s.serverUrl),
-		JwksUri:               fmt.Sprintf("%s/.well-known/jwks.json", s.serverUrl),
+		AuthorizationEndpoint: fmt.Sprintf("%sauthorize", s.serverUrl),
+		TokenEndpoint:         fmt.Sprintf("%soauth/token", s.serverUrl),
+		JwksUri:               fmt.Sprintf("%s.well-known/jwks.json", s.serverUrl),
 	}
 
 	w.Header().Add("Content-Type", "application/json")

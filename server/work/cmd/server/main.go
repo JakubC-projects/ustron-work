@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/jakubc-projects/ustron-work/server/auth"
-	"github.com/jakubc-projects/ustron-work/server/frontend"
+	"github.com/jakubc-projects/ustron-work/server/work/api"
+	"github.com/jakubc-projects/ustron-work/server/work/auth"
+	"github.com/jakubc-projects/ustron-work/server/work/frontend"
+	"github.com/jakubc-projects/ustron-work/server/work/postgres"
 )
 
 type Config struct {
@@ -33,25 +35,39 @@ var (
 	oauthClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
 	oauthIssuer       = os.Getenv("OAUTH_ISSUER")
 	frontendLocation  = os.Getenv("FRONTEND_LOCATION")
+	connectionString  = os.Getenv("POSTGERS_CONNECTIONSTRING")
 )
 
 func main() {
 
-	a := auth.New(
+	db, err := postgres.NewDb(connectionString)
+	if err != nil {
+		panic(fmt.Errorf("cannot open db connection: %w", err))
+	}
+
+	ps := postgres.NewPersonService(db)
+	ss := postgres.NewSessionService(db)
+	// rs := postgres.NewRegistrationService(db)
+
+	auth := auth.New(
 		auth.Config{
-			ClientId:     oauthClientId,
-			ClientSecret: oauthClientSecret,
-			Issuer:       oauthIssuer,
-			Host:         serverHost,
+			ClientId:       oauthClientId,
+			ClientSecret:   oauthClientSecret,
+			Issuer:         oauthIssuer,
+			Host:           serverHost,
+			SessionService: ss,
 		},
 	)
 
+	api := api.NewApi(auth, ps)
+
 	mux := http.NewServeMux()
 
-	a.SetLoginHandlers(mux)
+	auth.SetLoginHandlers(mux)
+	api.LoadRoutes(mux)
 
 	authenticatedMux := http.NewServeMux()
-	mux.Handle("/", a.RequiresAuth(authenticatedMux))
+	mux.Handle("/", auth.RequiresAuth(authenticatedMux))
 
 	authenticatedMux.Handle("/", (frontend.Handler(frontendLocation)))
 

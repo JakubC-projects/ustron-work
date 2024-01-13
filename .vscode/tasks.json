@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compose up",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/compose-up.sh",
+            "problemMatcher": []
+        },
+
+        {
+            "label": "Compose components up",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/components-up.sh",
+            "problemMatcher": []
+        }
+    ]
+}

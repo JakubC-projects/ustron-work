@@ -1,12 +1,14 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/coreos/go-oidc"
 	"github.com/google/uuid"
+	"github.com/jakubc-projects/ustron-work/server/work"
 )
 
 type Session struct {
@@ -27,35 +29,39 @@ type Role struct {
 
 const sessionCookieName = "login_session"
 
-func (a *Auth) getSession(req *http.Request) (Session, error) {
-	var s Session
+func (a *Auth) getSession(req *http.Request) (work.Session, error) {
 	cookie, err := req.Cookie(sessionCookieName)
 	if err != nil {
-		return s, fmt.Errorf("no cookie")
+		return work.Session{}, fmt.Errorf("no cookie")
 	}
 
-	err = a.cookieEncryption.Decode(sessionCookieName, cookie.Value, &s)
+	sessionUid, err := uuid.Parse(cookie.Value)
+	if err != nil {
+		return work.Session{}, fmt.Errorf("invalid session id: %w", err)
+	}
+
+	session, err := a.sessionService.GetSession(req.Context(), sessionUid)
 
 	if err != nil {
-		return s, fmt.Errorf("cannot decode session: %w", err)
-
+		return session, fmt.Errorf("cannot find session: %w", err)
 	}
 
-	if !s.ExpiresAt.After(time.Now()) {
-		return s, fmt.Errorf("session expired")
+	if !session.Expiry.After(time.Now()) {
+		return session, fmt.Errorf("session expired")
 	}
 
-	return s, nil
+	return session, nil
 }
 
-func (a *Auth) setSession(w http.ResponseWriter, session Session) error {
-	encoded, err := a.cookieEncryption.Encode(sessionCookieName, session)
+func (a *Auth) setSession(ctx context.Context, w http.ResponseWriter, session work.Session) error {
+	err := a.sessionService.SaveSession(ctx, session)
 	if err != nil {
-		return fmt.Errorf("cannot encode cookie value:%w", err)
+		return fmt.Errorf("cannot save session: %w", err)
 	}
+
 	cookie := &http.Cookie{
 		Name:     sessionCookieName,
-		Value:    encoded,
+		Value:    session.Uid.String(),
 		Path:     "/",
 		HttpOnly: true,
 	}
@@ -75,17 +81,17 @@ func (a *Auth) deleteSession(w http.ResponseWriter) {
 	http.SetCookie(w, cookie)
 }
 
-func getSessionFromIdToken(idToken *oidc.IDToken) (Session, error) {
+func getSessionFromIdToken(idToken *oidc.IDToken) (work.Session, error) {
 	var claims idTokenClaims
 
 	err := idToken.Claims(&claims)
 	if err != nil {
-		return Session{}, fmt.Errorf("cannot parse claims: %w", err)
+		return work.Session{}, fmt.Errorf("cannot parse claims: %w", err)
 	}
 
-	return Session{
-		ExpiresAt: idToken.Expiry,
+	return work.Session{
+		Uid:       uuid.New(),
 		PersonUid: claims.PersonUid,
-		Roles:     []Role{},
+		Expiry:    idToken.Expiry,
 	}, nil
 }
