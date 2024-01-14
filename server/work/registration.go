@@ -7,10 +7,10 @@ import (
 )
 
 type Registration struct {
-	Uid              uuid.UUID `json:"uid"`
-	PersonUid        uuid.UUID `json:"personUid"`
-	Team             Team      `json:"team"`
-	RegistrationType RegistrationType
+	Uid      uuid.UUID        `json:"uid"`
+	PersonID int              `json:"personID"`
+	Team     Team             `json:"team"`
+	Type     RegistrationType `json:"type"`
 
 	HourlyWage int `json:"hourlyWage"`
 	Hours      int `json:"hours"`
@@ -26,7 +26,7 @@ const (
 )
 
 func (r Registration) Value() int {
-	switch r.RegistrationType {
+	switch r.Type {
 	case RegistrationTypeWork:
 		return r.HourlyWage * r.Hours
 	case RegistrationTypeMoney:
@@ -36,7 +36,7 @@ func (r Registration) Value() int {
 }
 
 type RegistrationService interface {
-	GetPersonRegistrations(context.Context, uuid.UUID) ([]Registration, error)
+	GetPersonRegistrations(context.Context, int) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)
 	CreateRegistration(context.Context, Registration) error
 	UpdateRegistration(context.Context, Registration) error

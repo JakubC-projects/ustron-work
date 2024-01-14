@@ -8,9 +8,9 @@ import (
 )
 
 type Session struct {
-	Uid       uuid.UUID
-	PersonUid uuid.UUID
-	Expiry    time.Time
+	Uid      uuid.UUID
+	PersonID int
+	Expiry   time.Time
 }
 
 type SessionService interface {

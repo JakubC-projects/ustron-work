@@ -2,12 +2,10 @@ package users
 
 import (
 	"math/rand"
-
-	"github.com/google/uuid"
 )
 
 type User struct {
-	Uid         uuid.UUID
+	PersonID    int
 	DisplayName string
 }
 

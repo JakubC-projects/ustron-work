@@ -11,20 +11,8 @@ import (
 	"github.com/jakubc-projects/ustron-work/server/work"
 )
 
-type Session struct {
-	PersonUid uuid.UUID
-	Roles     []Role
-	ExpiresAt time.Time
-}
-
 type idTokenClaims struct {
-	PersonUid uuid.UUID `json:"https://login.bcc.no/claims/personUid"`
-}
-
-type Role struct {
-	OrgId    int       `json:"orgId"`
-	OrgUid   uuid.UUID `json:"orgUid"`
-	RoleName string    `json:"roleName"`
+	PersonID int `json:"https://login.bcc.no/claims/personId"`
 }
 
 const sessionCookieName = "login_session"
@@ -90,8 +78,8 @@ func getSessionFromIdToken(idToken *oidc.IDToken) (work.Session, error) {
 	}
 
 	return work.Session{
-		Uid:       uuid.New(),
-		PersonUid: claims.PersonUid,
-		Expiry:    idToken.Expiry,
+		Uid:      uuid.New(),
+		PersonID: claims.PersonID,
+		Expiry:   idToken.Expiry,
 	}, nil
 }

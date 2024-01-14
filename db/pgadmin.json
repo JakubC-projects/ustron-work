@@ -7,7 +7,16 @@
             "Username": "postgres",
             "Host": "localhost",
             "SSLMode": "disable",
-            "MaintenanceDB": "test"
+            "MaintenanceDB": "postgres"
+        },
+        "2": {
+            "Name": "Work - cloud",
+            "Group": "Servers",
+            "Port": 4150,
+            "Username": "postgres",
+            "Host": "localhost",
+            "SSLMode": "disable",
+            "MaintenanceDB": "postgres"
         }
     }
 }

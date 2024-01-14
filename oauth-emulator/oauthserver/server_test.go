@@ -14,6 +14,8 @@ func TestGenerateKey(t *testing.T) {
 
 	keyString, err := json.Marshal(k)
 
+	assert.NoError(t, err)
+
 	server := New(string(keyString), "", nil)
 	fmt.Println(server)
 	fmt.Println(string(keyString))

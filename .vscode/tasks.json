@@ -7,11 +7,16 @@
             "command": "${workspaceFolder}/scripts/compose-up.sh",
             "problemMatcher": []
         },
-
         {
             "label": "Compose components up",
             "type": "shell",
             "command": "${workspaceFolder}/scripts/components-up.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "Cloud Sql Proxy",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/start-sql-proxy.sh",
             "problemMatcher": []
         }
     ]

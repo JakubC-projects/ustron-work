@@ -2,11 +2,25 @@ version: "3.4"
 
 services:
   server:
-    profiles: ["all"]
+    profiles: ["dev"]
     network_mode: host
     build: server
     env_file: server/.env
-    entrypoint: ["sh", "-c", 'sleep 3; main;']
+    environment:
+      FRONTEND_LOCATION: http://localhost:5173
+    depends_on:
+      oauth_emulator:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  server_prod:
+    profiles: ["prod"]
+    network_mode: host
+    build: .
+    env_file: server/.env
+    environment:
+      FRONTEND_LOCATION: /frontend
     depends_on:
       oauth_emulator:
         condition: service_healthy
@@ -14,7 +28,7 @@ services:
         condition: service_healthy
 
   oauth_emulator:
-    profiles: ["all", "components"]
+    profiles: ["dev", "prod", "components"]
     network_mode: host
     build: oauth-emulator
     env_file: oauth-emulator/.env
@@ -25,7 +39,7 @@ services:
       retries: 5
 
   client:
-    profiles: ["all", "components"]
+    profiles: ["dev"]
     network_mode: host
     build:
       context: client
@@ -34,12 +48,12 @@ services:
       - ./client/src:/app/src
   postgres:
     network_mode: host
-    profiles: ["all", "components"]
+    profiles: ["dev", "prod", "components"]
     image: postgres:15.4
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: test
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: work-test
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./db/test_data.sql:/docker-entrypoint-initdb.d/test_data.sql
@@ -50,7 +64,7 @@ services:
       retries: 5
   pgadmin:
     image: dpage/pgadmin4
-    profiles: ["all", "components"]
+    profiles: ["dev","prod", "components"]
     container_name: pgadmin
     network_mode: host
     volumes:

@@ -3,10 +3,10 @@
     <body>
         <h1>Server emulator</h1>
         <form method="post">
-            <label for="person_uid">Select User:</label>
-            <select name="person_uid">
+            <label for="person_id">Select User:</label>
+            <select name="person_id">
                 {{range .AvailableUsers}}
-                <option value="{{.Uid}}">{{.DisplayName}}</option>
+                <option value="{{.PersonID}}">{{.DisplayName}}</option>
                 {{end}}
               </select>
             <input type="submit">

@@ -1,12 +1,10 @@
 package oauthserver
 
-import "github.com/google/uuid"
-
 type TokenPayload struct {
-	Issuer    string    `json:"iss"`
-	Audience  string    `json:"aud"`
-	Subject   string    `json:"sub"`
-	PersonUid uuid.UUID `json:"https://login.bcc.no/claims/personUid"`
+	Issuer   string `json:"iss"`
+	Audience string `json:"aud"`
+	Subject  string `json:"sub"`
+	PersonID int    `json:"https://login.bcc.no/claims/personId"`
 }
 
 type TokenResponse struct {

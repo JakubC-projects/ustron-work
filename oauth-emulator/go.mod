@@ -3,9 +3,9 @@ module github.com/jakubc-projects/ustron-work/oauth-emulator
 go 1.21.3
 
 require (
-	github.com/google/uuid v1.3.1
 	github.com/gorilla/schema v1.2.1
 	github.com/lestrrat-go/jwx v1.2.28
+	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.8.4
 )
 
@@ -21,5 +21,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

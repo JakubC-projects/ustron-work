@@ -42,7 +42,7 @@ func New(cfg Config) *Auth {
 			Endpoint:     endpoint,
 			Scopes:       []string{"openid", "profile"},
 		},
-		logoutEndpoint:  fmt.Sprintf("%sv2/logout", cfg.Issuer),
+		logoutEndpoint:  cfg.Host,
 		sessionService:  cfg.SessionService,
 		idTokenVerifier: provider.Verifier(&oidc.Config{ClientID: cfg.ClientId, SkipIssuerCheck: true}),
 	}

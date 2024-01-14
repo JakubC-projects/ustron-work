@@ -1,3 +1,20 @@
 {
-    "go.testEnvFile": "${workspaceFolder}/server/.env"
+    "go.testEnvFile": "${workspaceFolder}/server/.env",
+    "cSpell.words": [
+        "autologin",
+        "Daly",
+        "dbname",
+        "Jakey",
+        "jakubc",
+        "Jwks",
+        "lestrrat",
+        "Mallai",
+        "oauthserver",
+        "Oidc",
+        "samber",
+        "sslmode",
+        "stretchr",
+        "ustron",
+        "workapi"
+    ]
 }

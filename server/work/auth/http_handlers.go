@@ -25,7 +25,7 @@ func (a *Auth) loginHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	cookie := http.Cookie{Name: "state", Value: state, Expires: time.Now().AddDate(0, 0, 1)}
+	cookie := http.Cookie{Name: "state", Value: state, SameSite: http.SameSiteLaxMode, Expires: time.Now().AddDate(0, 0, 1)}
 	http.SetCookie(w, &cookie)
 
 	http.Redirect(w, req, a.oauthConfig.AuthCodeURL(state, oauth2.SetAuthURLParam("response_mode", "post_form")), http.StatusTemporaryRedirect)
@@ -72,7 +72,11 @@ func (a *Auth) callbackHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	a.setSession(req.Context(), w, session)
+	if err := a.setSession(req.Context(), w, session); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "cannot save session: %s", err)
+		return
+	}
 
 	http.Redirect(w, req, "/", http.StatusTemporaryRedirect)
 }

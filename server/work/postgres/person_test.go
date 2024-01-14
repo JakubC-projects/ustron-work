@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/jakubc-projects/ustron-work/server/work"
 	"github.com/stretchr/testify/assert"
 )
@@ -12,18 +11,17 @@ import (
 func TestGetUser(t *testing.T) {
 	personService := getPersonService()
 
-	uid := uuid.MustParse("7dbbdbd4-7347-495c-9ce9-30c5b6e51928")
-	p, err := personService.GetPerson(context.Background(), uid)
+	p, err := personService.GetPerson(context.Background(), 54512)
 
 	assert.NoError(t, err)
-	assert.Equal(t, uid, p.Uid)
+	assert.Equal(t, 54512, p.PersonID)
 }
 
 func TestCreateUser(t *testing.T) {
 	personService := getPersonService()
 
 	err := personService.CreatePerson(context.Background(), work.Person{
-		Uid:         uuid.New(),
+		PersonID:    54555,
 		DisplayName: "Test user",
 		Team:        work.TeamBlue,
 		Role:        work.RoleAdmin,

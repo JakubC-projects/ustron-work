@@ -2,31 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
-	"github.com/jakubc-projects/ustron-work/server/work/api"
 	"github.com/jakubc-projects/ustron-work/server/work/auth"
 	"github.com/jakubc-projects/ustron-work/server/work/frontend"
 	"github.com/jakubc-projects/ustron-work/server/work/postgres"
+	"github.com/jakubc-projects/ustron-work/server/work/workapi"
 )
-
-type Config struct {
-	Server struct {
-		Port int    `envconfig:"PORT"`
-		Host string `envconfig:"SERVER_HOST"`
-	}
-	Oauth struct {
-		ClientID     string `envconfig:"OAUTH_CLIENT_ID"`
-		ClientSecret string `envconfig:"OAUTH_CLIENT_SECRET"`
-		Issuer       string `envconfig:"OAUTH_ISSUER"`
-	}
-	Coreapi struct {
-		BasePath string `envconfig:"COREAPI_BASE_PATH"`
-		Audience string `envconfig:"COREAPI_AUDIENCE"`
-	}
-	FrontendLocation string `envconfig:"FRONTEND_LOCATION"`
-}
 
 var (
 	port              = os.Getenv("PORT")
@@ -47,7 +31,7 @@ func main() {
 
 	ps := postgres.NewPersonService(db)
 	ss := postgres.NewSessionService(db)
-	// rs := postgres.NewRegistrationService(db)
+	rs := postgres.NewRegistrationService(db)
 
 	auth := auth.New(
 		auth.Config{
@@ -59,17 +43,20 @@ func main() {
 		},
 	)
 
-	api := api.NewApi(auth, ps)
+	api := workapi.NewApi(ps, rs)
 
 	mux := http.NewServeMux()
 
 	auth.SetLoginHandlers(mux)
-	api.LoadRoutes(mux)
 
 	authenticatedMux := http.NewServeMux()
+
 	mux.Handle("/", auth.RequiresAuth(authenticatedMux))
 
+	api.LoadRoutes(authenticatedMux)
 	authenticatedMux.Handle("/", (frontend.Handler(frontendLocation)))
 
-	http.ListenAndServe(fmt.Sprintf(":%s", port), mux)
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), mux); err != nil {
+		log.Fatalf("cannot start server: %s", err)
+	}
 }

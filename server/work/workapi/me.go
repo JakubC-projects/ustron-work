@@ -1,4 +1,4 @@
-package api
+package workapi
 
 import (
 	"encoding/json"
@@ -10,11 +10,11 @@ import (
 	"github.com/samber/lo"
 )
 
-func (a *Api) GetMeRoute(w http.ResponseWriter, req *http.Request) {
+func (a *Api) GetMe(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	s := lo.Must(work.GetSession(ctx))
 
-	me, err := a.personService.GetPerson(ctx, s.PersonUid)
+	me, err := a.personService.GetPerson(ctx, s.PersonID)
 	if errors.Is(err, work.ErrNotFound) {
 		http.Error(w, "cannot find person", http.StatusNotFound)
 		return

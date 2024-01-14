@@ -22,7 +22,7 @@ var _ work.SessionService = (*SessionService)(nil)
 func (srv *SessionService) GetSession(ctx context.Context, uid uuid.UUID) (work.Session, error) {
 	var p work.Session
 
-	rows, err := srv.db.QueryContext(ctx, "SELECT uid, person_uid, expiry FROM Sessions WHERE uid = $1", uid)
+	rows, err := srv.db.QueryContext(ctx, "SELECT uid, person_id, expiry FROM Sessions WHERE uid = $1", uid)
 
 	if err != nil {
 		return p, fmt.Errorf("sql error getting Session: %w", err)
@@ -41,7 +41,7 @@ func (srv *SessionService) GetSession(ctx context.Context, uid uuid.UUID) (work.
 }
 
 func (srv *SessionService) SaveSession(ctx context.Context, s work.Session) error {
-	_, err := srv.db.ExecContext(ctx, "INSERT INTO Sessions (uid, person_uid, expiry) VALUES ($1, $2, $3)", s.Uid, s.PersonUid, s.Expiry)
+	_, err := srv.db.ExecContext(ctx, "INSERT INTO Sessions (uid, person_id, expiry) VALUES ($1, $2, $3)", s.Uid, s.PersonID, s.Expiry)
 
 	return err
 }
@@ -53,7 +53,7 @@ func scanSessions(rows *sql.Rows) ([]work.Session, error) {
 	for rows.Next() {
 		var p work.Session
 
-		err := rows.Scan(&p.Uid, &p.PersonUid, &p.Expiry)
+		err := rows.Scan(&p.Uid, &p.PersonID, &p.Expiry)
 
 		if err != nil {
 			return nil, err

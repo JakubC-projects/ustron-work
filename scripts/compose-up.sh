@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker compose --profile all up --build 
+docker compose --profile dev up --build 
