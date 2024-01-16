@@ -101,7 +101,6 @@ func (a *Auth) getCallbackToken(req *http.Request) (*oauth2.Token, error) {
 	return token, nil
 }
 
-// Handler for our login.
 func (a *Auth) logoutHandler(w http.ResponseWriter, req *http.Request) {
 	a.deleteSession(w)
 	http.Redirect(w, req, a.logoutEndpoint, http.StatusTemporaryRedirect)
