@@ -11,7 +11,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main work/cmd/server/main.
 FROM node:18-buster as client
 
 WORKDIR /app
-COPY client/package.json client/package-lock.json client/index.html client/tsconfig.json client/tsconfig.node.json client/vite.config.ts ./
+COPY client/package.json client/package-lock.json client/index.html client/tsconfig.json client/tsconfig.node.json client/vite.config.ts client/tailwind.config.js client/postcss.config.js ./
 RUN npm ci --force
 
 COPY client/src src

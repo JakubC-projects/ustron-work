@@ -30,7 +30,7 @@ const heightMultiplier = computed(() => {
             <div v-for="team in Team">
                 <div class="flex flex-col items-center justify-end">
                     <p class="pb-1">{{ status[team] }}</p>
-                    <div class="w-14 mb-3" :style="`background-color: ${fillColors[team]}; height: ${status[team] * heightMultiplier}px;`" ></div>
+                    <div class="w-14 mb-3 transition-[height]" :style="`background-color: ${fillColors[team]}; height: ${status[team] * heightMultiplier}px;`" ></div>
                     <Helmet class="w-12" :team="team" />
                 </div>
             </div>

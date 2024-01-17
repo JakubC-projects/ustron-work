@@ -35,9 +35,21 @@ func (r Registration) Value() int {
 	return 0
 }
 
+type Status map[Team]int
+
+func NewStatus() Status {
+	return Status{
+		TeamBlue:   0,
+		TeamGreen:  0,
+		TeamOrange: 0,
+		TeamRed:    0,
+	}
+}
+
 type RegistrationService interface {
 	GetPersonRegistrations(context.Context, int) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)
 	CreateRegistration(context.Context, Registration) error
 	UpdateRegistration(context.Context, Registration) error
+	GetStatus(context.Context) (Status, error)
 }

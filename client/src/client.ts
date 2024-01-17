@@ -1,4 +1,4 @@
-import { CreateRegistration, Registration, User } from "./domain"
+import { CreateRegistration, Registration, Status, User } from "./domain"
 
 export async function getMe(): Promise<User> {
     const res = await fetch("/api/me")
@@ -24,8 +24,18 @@ export async function createMyRegistration(r: CreateRegistration): Promise<Regis
 
 export async function getMyRegistrations(): Promise<Registration[]> {
   const response = await fetch("/api/my-registrations");
-
   const registrations = await response.json()
-
   return registrations
+}
+
+export async function getStatus(): Promise<Status> {
+  const response = await fetch("/api/status");
+  const status = await response.json()
+  return status
+}
+
+export async function getOnTrackStatus(): Promise<Status> {
+  const response = await fetch("/api/on-track");
+  const status = await response.json()
+  return status
 }

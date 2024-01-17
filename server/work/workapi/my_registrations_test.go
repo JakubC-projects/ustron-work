@@ -34,7 +34,7 @@ func TestMyRegistrations(t *testing.T) {
 	ps := mock.NewPersonService(person)
 	rs := mock.NewRegistrationService(registration)
 
-	api := NewApi(ps, rs)
+	api := NewApi(ps, rs, nil)
 
 	loggedInSession := work.SetSession(context.Background(), work.Session{
 		Uid:      uuid.Nil,

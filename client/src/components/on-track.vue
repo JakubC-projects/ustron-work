@@ -7,10 +7,6 @@ defineProps({
     status: {type: Object as PropType<Status>, required: true}
 })
 
-function toPercent(status: number): number {
-    return Math.round(status * 100)
-}
-
 </script>
 
 <template>
@@ -19,8 +15,8 @@ function toPercent(status: number): number {
         <div class="flex justify-between items-end mb-8">
             <div v-for="team in Team">
                 <div class="flex flex-col items-center justify-end">
-                    <Helmet class="w-16" :team="team" :fill="status[team]"/>
-                    <p class="pb-1">{{ toPercent(status[team]) }} %</p>
+                    <Helmet class="w-16" :team="team" :fill="status[team] / 100"/>
+                    <p class="pb-1">{{ status[team] }} %</p>
                 </div>
             </div>
         </div>

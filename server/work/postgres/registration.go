@@ -81,6 +81,31 @@ func (s *RegistrationService) UpdateRegistration(ctx context.Context, r work.Reg
 	return err
 }
 
+func (s *RegistrationService) GetStatus(ctx context.Context) (work.Status, error) {
+	result := work.NewStatus()
+
+	rows, err := s.db.QueryContext(ctx,
+		`SELECT team, SUM(paid_sum + (hourly_wage * hours)) 
+		FROM registrations GROUP BY team`,
+	)
+	if err != nil {
+		return result, err
+	}
+	for rows.Next() {
+		var team work.Team
+		var status int
+		err := rows.Scan(&team, &status)
+
+		if err != nil {
+			return result, err
+		}
+
+		result[team] = status
+	}
+
+	return result, nil
+}
+
 func scanRegistrations(rows *sql.Rows) ([]work.Registration, error) {
 
 	var registrations []work.Registration

@@ -25,3 +25,10 @@ CREATE TABLE IF NOT EXISTS "public"."registrations" (
 	CONSTRAINT "registrations_pkey" PRIMARY KEY (uid),
 	CONSTRAINT "registrations_persons_fk" FOREIGN KEY (person_id) REFERENCES persons(person_id)
 );
+
+
+CREATE TABLE IF NOT EXISTS "public"."on_track" (
+	"team" TEXT NOT NULL,
+	"status" INT NOT NULL,
+	CONSTRAINT "on_track_pkey" PRIMARY KEY (team)
+);

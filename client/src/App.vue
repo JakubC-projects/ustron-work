@@ -1,58 +1,73 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import {  getMe, getMyRegistrations } from './client';
-import {  Registration,   User } from './domain';
-import Status from './components/status.vue';
+import {  createMyRegistration, getMe, getMyRegistrations, getOnTrackStatus, getStatus } from './client';
+import {  CreateRegistration, Registration,   RegistrationType,   Status,   User } from './domain';
+import StatusVue from './components/status.vue';
 import OnTrack from './components/on-track.vue';
+import AddRegistrationButton from './components/add-registration-button.vue';
+import AddRegistration from './components/add-registration.vue';
+import MyRegistrations from './components/my-registrations.vue';
+import AdditionalInformation from './components/additional-information.vue';
 
 const me = ref<User>()
-// const newRegistration = ref<CreateRegistration>()
+const newRegistration = ref<CreateRegistration>()
 const myRegistrations = ref<Registration[]>([])
+const status = ref<Status>()
+const onTrack = ref<Status>()
 
-async function load() {
-  me.value = await getMe()
-  myRegistrations.value = await getMyRegistrations()
+
+async function loadData() {
+  const promises = [getMe(), getMyRegistrations(), getStatus(), getOnTrackStatus()] as const
+
+  [me.value, myRegistrations.value, status.value, onTrack.value] = await Promise.all(promises) 
 }
 
-load()
+loadData()
 
-// function startNewRegistration() {
-//   newRegistration.value = {
-//     type:RegistrationType.Work,
-//     hourlyWage: 0,
-//     hours: 0,
-//     paidSum: 0
-//   }
-// }
+function startNewRegistration() {
+  newRegistration.value = {
+    type:RegistrationType.Work,
+    hourlyWage: 0,
+    hours: 0,
+    paidSum: 0
+  }
+}
 
-// async function createNewRegistration() {
-//   if(!newRegistration.value) {
-//     return
-//   }
-//   await createMyRegistration(newRegistration.value)
-//   myRegistrations.value = await getMyRegistrations()
-//   newRegistration.value = undefined
-// }
+function toggleNewRegistration() {
+  if(newRegistration.value) {
+    newRegistration.value = undefined
+  } else {
+    startNewRegistration()
+  }
+}
+
+async function createNewRegistration() {
+  if(!newRegistration.value) {
+    return
+  }
+  await createMyRegistration(newRegistration.value)
+  await loadData()
+
+  newRegistration.value = undefined
+}
 
 </script>
 
 <template>
-  <div class="max-w-sm  mx-auto">
+  <div class="relative max-w-sm mx-auto">
     <div class="p-6">
       <img class="mx-auto mb-3" src="./assets/logo.svg" />
       <h1 class="text-white text-center text-5xl italic">Sezon 2!</h1>
     </div>
-    <Status :status="{Blue: 100, Red: 200, Green: 300, Orange: 400}"/>
-    <OnTrack :status="{Blue: 0.3, Red: 0.8, Green: 0.1, Orange: 0.2}"/>
+    <StatusVue v-if="status" :status="status"/>
+    <OnTrack v-if="onTrack" :status="onTrack"/>
+    <div class="px-5 py-6">
+      <MyRegistrations :registrations="myRegistrations" class="mb-3"/>
+      <AdditionalInformation />
+    </div>
+    <div class="h-48"></div>
+    <AddRegistration v-if="newRegistration" v-model="newRegistration" @confirm="createNewRegistration"/>
+    <AddRegistrationButton class="fixed right-5 bottom-5" :is-open="newRegistration != undefined" @click="toggleNewRegistration"/>
+
   </div>
 </template>
-
-<style>
-
-body{
-    color: #fff;
-    font-family: 'Poppins', sans-serif;
-    background: #1E302D;
-}
-
-</style>

@@ -31,3 +31,14 @@ func (rs *RegistrationService) CreateRegistration(ctx context.Context, reg work.
 func (rs *RegistrationService) UpdateRegistration(ctx context.Context, reg work.Registration) error {
 	return rs.S.Update(ctx, reg)
 }
+
+func (rs *RegistrationService) GetStatus(ctx context.Context) (work.Status, error) {
+	status := work.NewStatus()
+
+	for _, r := range rs.S.Data {
+		status[r.Team] += r.Value()
+	}
+
+	return status, nil
+
+}

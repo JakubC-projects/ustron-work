@@ -32,6 +32,7 @@ func main() {
 	ps := postgres.NewPersonService(db)
 	ss := postgres.NewSessionService(db)
 	rs := postgres.NewRegistrationService(db)
+	ts := postgres.NewOnTrackService(db)
 
 	auth := auth.New(
 		auth.Config{
@@ -43,7 +44,7 @@ func main() {
 		},
 	)
 
-	api := workapi.NewApi(ps, rs)
+	api := workapi.NewApi(ps, rs, ts)
 
 	mux := http.NewServeMux()
 

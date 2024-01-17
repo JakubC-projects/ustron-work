@@ -22,7 +22,7 @@ func TestGetMe(t *testing.T) {
 	}
 	ps := mock.NewPersonService(person)
 
-	api := NewApi(ps, nil)
+	api := NewApi(ps, nil, nil)
 
 	t.Run("OK", func(t *testing.T) {
 		loggedInSession := work.SetSession(context.Background(), work.Session{
