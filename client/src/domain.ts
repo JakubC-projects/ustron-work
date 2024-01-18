@@ -20,11 +20,14 @@ export enum Role {
 
 export type CreateRegistration = {
     type: RegistrationType
-
+    date: string
     hourlyWage: number
     hours: number
 
     paidSum: number
+
+    goal: Goal
+    comment: string
 }
 
 export type Registration = CreateRegistration & {
@@ -36,6 +39,11 @@ export type Registration = CreateRegistration & {
 export enum RegistrationType {
     Money = "Money",
     Work = "Work"
+}
+
+export enum Goal {
+    Samvirk = "Samvirk",
+    BUK = "BUK"
 }
 
 export type Status = Record<Team, number>

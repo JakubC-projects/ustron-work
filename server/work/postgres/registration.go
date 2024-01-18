@@ -22,7 +22,7 @@ var _ work.RegistrationService = (*RegistrationService)(nil)
 func (s *RegistrationService) GetRegistration(ctx context.Context, uid uuid.UUID) (work.Registration, error) {
 	rows, err := s.db.QueryContext(ctx,
 		`SELECT 
-		uid, person_id, team, type, hourly_wage, hours, paid_sum
+		uid, person_id, team, type, date, hourly_wage, hours, paid_sum, comment
 		FROM Registrations WHERE uid = $1`, uid)
 
 	if err != nil {
@@ -44,7 +44,7 @@ func (s *RegistrationService) GetRegistration(ctx context.Context, uid uuid.UUID
 func (s *RegistrationService) GetPersonRegistrations(ctx context.Context, personID int) ([]work.Registration, error) {
 	rows, err := s.db.QueryContext(ctx,
 		`SELECT 
-		uid, person_id, team, type, hourly_wage, hours, paid_sum
+		uid, person_id, team, type, date, hourly_wage, hours, paid_sum, comment
 		FROM registrations WHERE person_id = $1`, personID)
 
 	if err != nil {
@@ -57,7 +57,7 @@ func (s *RegistrationService) GetPersonRegistrations(ctx context.Context, person
 func (s *RegistrationService) GetTeamRegistrations(ctx context.Context, team work.Team) ([]work.Registration, error) {
 	rows, err := s.db.QueryContext(ctx,
 		`SELECT 
-		uid, person_id, team, type, hourly_wage, hours, paid_sum
+		uid, person_id, team, type, date, hourly_wage, hours, paid_sum, comment
 		FROM registrations WHERE team = $1`, team)
 	if err != nil {
 		return nil, fmt.Errorf("sql error getting Registration: %w", err)
@@ -68,15 +68,15 @@ func (s *RegistrationService) GetTeamRegistrations(ctx context.Context, team wor
 }
 
 func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Registration) error {
-	_, err := s.db.ExecContext(ctx, "INSERT INTO registrations (uid, person_id, team, type, hourly_wage, hours, paid_sum) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-		r.Uid, r.PersonID, r.Team, r.Type, r.HourlyWage, r.Hours, r.PaidSum)
+	_, err := s.db.ExecContext(ctx, "INSERT INTO registrations (uid, person_id, team, date, type, hourly_wage, hours, paid_sum, comment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+		r.Uid, r.PersonID, r.Team, r.Date, r.Type, r.HourlyWage, r.Hours, r.PaidSum, r.Comment)
 
 	return err
 }
 
 func (s *RegistrationService) UpdateRegistration(ctx context.Context, r work.Registration) error {
-	_, err := s.db.ExecContext(ctx, "UPDATE registrations SET person_id=$2, team=$3, type=$4 hourly_wage=$5, hours=$6, paid_sum=$7 WHERE uid=$1",
-		r.Uid, r.PersonID, r.Team, r.Type, r.HourlyWage, r.Hours, r.PaidSum)
+	_, err := s.db.ExecContext(ctx, "UPDATE registrations SET person_id=$2, team=$3, date=$3, type=$5 hourly_wage=$6, hours=$7, paid_sum=$8, comment=$9 WHERE uid=$1",
+		r.Uid, r.PersonID, r.Team, r.Date, r.Type, r.HourlyWage, r.Hours, r.PaidSum, r.Comment)
 
 	return err
 }
@@ -112,7 +112,7 @@ func scanRegistrations(rows *sql.Rows) ([]work.Registration, error) {
 
 	for rows.Next() {
 		var r work.Registration
-		err := rows.Scan(&r.Uid, &r.PersonID, &r.Team, &r.Type, &r.HourlyWage, &r.Hours, &r.PaidSum)
+		err := rows.Scan(&r.Uid, &r.PersonID, &r.Team, &r.Type, &r.Date, &r.HourlyWage, &r.Hours, &r.PaidSum, &r.Comment)
 
 		if err != nil {
 			return nil, err

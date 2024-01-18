@@ -18,11 +18,12 @@ CREATE TABLE IF NOT EXISTS "public"."registrations" (
 	"uid" UUID NOT NULL,
 	"person_id" INT NOT NULL,
 	"team" TEXT NOT NULL,
-	"date" DATE NOT NULL,
 	"type" TEXT NOT NULL,
+	"date" DATE NOT NULL,
 	"hourly_wage" INT NULL,
 	"hours" INT NULL,
 	"paid_sum" INT NULL,
+	"comment" TEXT NULL,
 	CONSTRAINT "registrations_pkey" PRIMARY KEY (uid),
 	CONSTRAINT "registrations_persons_fk" FOREIGN KEY (person_id) REFERENCES persons(person_id)
 );

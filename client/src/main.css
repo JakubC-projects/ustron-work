@@ -8,3 +8,7 @@ body{
     font-family: 'Poppins', sans-serif;
     background: #1E302D;
 }
+
+input {
+    @apply w-full px-6 py-4 bg-[#21413E] rounded-lg
+}

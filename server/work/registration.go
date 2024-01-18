@@ -4,18 +4,23 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/jakubc-projects/ustron-work/server/work/date"
 )
 
 type Registration struct {
-	Uid      uuid.UUID        `json:"uid"`
-	PersonID int              `json:"personID"`
-	Team     Team             `json:"team"`
-	Type     RegistrationType `json:"type"`
+	Uid      uuid.UUID `json:"uid"`
+	PersonID int       `json:"personID"`
+	Team     Team      `json:"team"`
+
+	Type RegistrationType `json:"type"`
+	Date date.Date        `json:"date"`
 
 	HourlyWage int `json:"hourlyWage"`
 	Hours      int `json:"hours"`
 
 	PaidSum int `json:"paidSum"`
+
+	Comment string `json:"comment"`
 }
 
 type RegistrationType string
