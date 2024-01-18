@@ -12,6 +12,7 @@ import (
 
 type Config struct {
 	ClientId, ClientSecret, Issuer, Host string
+	LogoutEndpoint                       string
 	SessionService                       work.SessionService
 }
 
@@ -40,9 +41,9 @@ func New(cfg Config) *Auth {
 			ClientSecret: cfg.ClientSecret,
 			RedirectURL:  fmt.Sprintf("%s/callback", cfg.Host),
 			Endpoint:     endpoint,
-			Scopes:       []string{"openid", "profile"},
+			Scopes:       []string{"openid"},
 		},
-		logoutEndpoint:  cfg.Host,
+		logoutEndpoint:  cfg.LogoutEndpoint,
 		sessionService:  cfg.SessionService,
 		idTokenVerifier: provider.Verifier(&oidc.Config{ClientID: cfg.ClientId, SkipIssuerCheck: true}),
 	}

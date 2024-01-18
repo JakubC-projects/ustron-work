@@ -13,13 +13,14 @@ import (
 )
 
 var (
-	port              = os.Getenv("PORT")
-	serverHost        = os.Getenv("SERVER_HOST")
-	oauthClientId     = os.Getenv("OAUTH_CLIENT_ID")
-	oauthClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
-	oauthIssuer       = os.Getenv("OAUTH_ISSUER")
-	frontendLocation  = os.Getenv("FRONTEND_LOCATION")
-	connectionString  = os.Getenv("POSTGERS_CONNECTIONSTRING")
+	port                = os.Getenv("PORT")
+	serverHost          = os.Getenv("SERVER_HOST")
+	oauthClientId       = os.Getenv("OAUTH_CLIENT_ID")
+	oauthClientSecret   = os.Getenv("OAUTH_CLIENT_SECRET")
+	oauthIssuer         = os.Getenv("OAUTH_ISSUER")
+	oauthLogoutEndpoint = os.Getenv("OAUTH_LOGOUT_ENDPOINT")
+	frontendLocation    = os.Getenv("FRONTEND_LOCATION")
+	connectionString    = os.Getenv("POSTGERS_CONNECTIONSTRING")
 )
 
 func main() {
@@ -39,6 +40,7 @@ func main() {
 			ClientId:       oauthClientId,
 			ClientSecret:   oauthClientSecret,
 			Issuer:         oauthIssuer,
+			LogoutEndpoint: oauthLogoutEndpoint,
 			Host:           serverHost,
 			SessionService: ss,
 		},

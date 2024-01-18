@@ -28,7 +28,7 @@ func (a *Auth) loginHandler(w http.ResponseWriter, req *http.Request) {
 	cookie := http.Cookie{Name: "state", Value: state, SameSite: http.SameSiteLaxMode, Expires: time.Now().AddDate(0, 0, 1)}
 	http.SetCookie(w, &cookie)
 
-	http.Redirect(w, req, a.oauthConfig.AuthCodeURL(state, oauth2.SetAuthURLParam("response_mode", "post_form")), http.StatusTemporaryRedirect)
+	http.Redirect(w, req, a.oauthConfig.AuthCodeURL(state), http.StatusTemporaryRedirect)
 }
 
 func generateRandomState() (string, error) {
@@ -103,5 +103,6 @@ func (a *Auth) getCallbackToken(req *http.Request) (*oauth2.Token, error) {
 
 func (a *Auth) logoutHandler(w http.ResponseWriter, req *http.Request) {
 	a.deleteSession(w)
-	http.Redirect(w, req, a.logoutEndpoint, http.StatusTemporaryRedirect)
+	logoutUrl := fmt.Sprintf("%s?client_id=%s&returnTo=%s", a.logoutEndpoint, a.config.ClientId, a.config.Host)
+	http.Redirect(w, req, logoutUrl, http.StatusTemporaryRedirect)
 }
