@@ -63,11 +63,17 @@ async function createNewRegistration() {
     <OnTrack v-if="onTrack" :status="onTrack"/>
     <div class="px-5 py-6">
       <MyRegistrations :registrations="myRegistrations" class="mb-3"/>
-      <AdditionalInformation />
+      <AdditionalInformation class="mb-3" />
+      <a href="/logout" >
+        <div class="bg-white text-black text-center w-full py-4 text-xl rounded-lg">
+          Wyloguj
+        </div>
+      </a>
     </div>
     <div class="h-48"></div>
     <AddRegistration v-if="newRegistration" v-model="newRegistration" @confirm="createNewRegistration"/>
     <AddRegistrationButton class="fixed right-5 bottom-5" :is-open="newRegistration != undefined" @click="toggleNewRegistration"/>
+    
 
   </div>
 </template>
