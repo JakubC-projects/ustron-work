@@ -12,7 +12,7 @@ FROM node:18-buster as client
 
 WORKDIR /app
 COPY client/package.json client/package-lock.json client/index.html client/tsconfig.json client/tsconfig.node.json client/vite.config.ts client/tailwind.config.js client/postcss.config.js ./
-RUN npm ci --force
+RUN npm ci
 
 COPY client/src src
 RUN npm run build
