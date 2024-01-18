@@ -20,8 +20,8 @@ import rulesPDF from '../assets/rules.pdf'
                     </li>
                 </ol>
             </p>
-            <a class="mb-4" :href="rulesPDF" target="_blank">LINK do reguł akcji</a>
-            <p>
+            <a class="underline" :href="rulesPDF" target="_blank">LINK do reguł akcji</a>
+            <p class="mt-4">
                 Niejasności prosimy zgłaszać do liderów zespołów:<br>
                 <ul class="list-disc list-outside ml-5">
                     <li>🔵 BLUE: Edwin Nooitgedagt</li>
