@@ -39,3 +39,13 @@ export async function getOnTrackStatus(): Promise<Status> {
   const status = await response.json()
   return status
 }
+
+export async function setOnTrackStatus(s: Status): Promise<void> {
+  await fetch("/api/on-track", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(s),
+  });
+}
