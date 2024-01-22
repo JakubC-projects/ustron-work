@@ -37,8 +37,8 @@ async function createNewRegistration() {
         <div class="px-5 py-6">
             <p class="input-label">Dodaj</p>
             <div class="grid grid-cols-2 gap-4">
-                <InputRadio v-model="registration.type" :value="RegistrationType.Work" label="Praca"/>
-                <InputRadio v-model="registration.type" :value="RegistrationType.Money" label="Wpłata"/>
+                <InputRadio name="type" v-model="registration.type" :value="RegistrationType.Work" label="Praca"/>
+                <InputRadio name="type" v-model="registration.type" :value="RegistrationType.Money" label="Wpłata"/>
             </div>
         </div>
         <div class="px-5 py-6">
@@ -72,8 +72,8 @@ async function createNewRegistration() {
         <div class="px-5 py-6">
             <p class="input-label">Cel wpłaty</p>
             <div class="grid grid-cols-2 gap-4">
-                <InputRadio v-model="registration.goal" :value="Goal.BUK" label="BUK"/>
-                <InputRadio v-model="registration.goal" :value="Goal.Samvirk" label="Samvirk"/>
+                <InputRadio name="goal" v-model="registration.goal" :value="Goal.BUK" label="BUK"/>
+                <InputRadio name="goal" v-model="registration.goal" :value="Goal.Samvirk" label="Samvirk"/>
             </div>
         </div>
         <div class="px-5 py-6 ">
