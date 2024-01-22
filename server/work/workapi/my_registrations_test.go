@@ -45,7 +45,7 @@ func TestMyRegistrations(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/api/my-registrations", nil).WithContext(loggedInSession)
 		w := httptest.NewRecorder()
 
-		api.MyRegistrations(w, req)
+		api.myRegistrations(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Result().StatusCode)
 
@@ -66,7 +66,7 @@ func TestMyRegistrations(t *testing.T) {
 
 		req := httptest.NewRequest(http.MethodPost, "/api/my-registrations", b).WithContext(loggedInSession)
 		w := httptest.NewRecorder()
-		api.MyRegistrations(w, req)
+		api.myRegistrations(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Result().StatusCode)
 

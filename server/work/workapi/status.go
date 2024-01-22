@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (a *Api) Status(w http.ResponseWriter, req *http.Request) {
+func (a *Api) status(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 
 	status, err := a.registrationService.GetStatus(ctx)

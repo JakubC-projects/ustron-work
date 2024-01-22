@@ -12,7 +12,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func (a *Api) MyRegistrations(w http.ResponseWriter, req *http.Request) {
+func (a *Api) myRegistrations(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	s := lo.Must(work.GetSession(ctx))
 

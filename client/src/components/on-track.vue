@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 import {Status, Team} from '../domain'
-import Helmet from './helmet.vue';
+import OnTrackTeam from './on-track-team.vue';
 
 defineProps({
     status: {type: Object as PropType<Status>, required: true}
@@ -14,10 +14,7 @@ defineProps({
         <h3 class="text-center text-2xl mb-6">Procent bycia <span class="text-[#FF0] italic">ON TRACK</span></h3>
         <div class="flex justify-between items-end mb-8">
             <div v-for="team in Team">
-                <div class="flex flex-col items-center justify-end">
-                    <Helmet class="w-16" :team="team" :fill="status[team] / 100"/>
-                    <p class="pb-1">{{ status[team] }} %</p>
-                </div>
+                <OnTrackTeam :team="team" :value="status[team]"/>
             </div>
         </div>
         <div class="flex justify-center">

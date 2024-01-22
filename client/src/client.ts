@@ -1,8 +1,8 @@
-import { CreateRegistration, Registration, Status, User } from "./domain"
+import { CreateRegistration, Registration, Status, Person } from "./domain"
 
-export async function getMe(): Promise<User> {
+export async function getMe(): Promise<Person> {
     const res = await fetch("/api/me")
-    const me = await res.json() as User
+    const me = await res.json() as Person
 
     return me
 }

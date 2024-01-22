@@ -31,7 +31,7 @@ func TestGetMe(t *testing.T) {
 		})
 		req := httptest.NewRequest(http.MethodGet, "/api/me", nil).WithContext(loggedInSession)
 		w := httptest.NewRecorder()
-		api.GetMe(w, req)
+		api.getMe(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Result().StatusCode)
 
@@ -47,7 +47,7 @@ func TestGetMe(t *testing.T) {
 		})
 		req := httptest.NewRequest(http.MethodGet, "/api/me", nil).WithContext(loggedInSession)
 		w := httptest.NewRecorder()
-		api.GetMe(w, req)
+		api.getMe(w, req)
 
 		assert.Equal(t, http.StatusNotFound, w.Result().StatusCode)
 	})

@@ -10,7 +10,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func (a *Api) GetMe(w http.ResponseWriter, req *http.Request) {
+func (a *Api) getMe(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	s := lo.Must(work.GetSession(ctx))
 

@@ -1,4 +1,4 @@
-export type User = {
+export type Person = {
     displayName: string
     personID: number
     team: Team
@@ -15,7 +15,6 @@ export enum Team {
 export enum Role {
     Base = "Base",
     Admin = "Admin",
-    SuperAdmin = "SuperAdmin",
 }
 
 export type CreateRegistration = {
@@ -47,6 +46,15 @@ export enum Goal {
 }
 
 export type Status = Record<Team, number>
+
+export function newStatus(): Status {
+    return {
+        Blue: 0,
+        Green: 0,
+        Orange: 0,
+        Red: 0
+    }
+}
 
 export const fillColors: Record<Team, string> = {
     [Team.Blue]:

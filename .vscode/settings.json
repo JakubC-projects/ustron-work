@@ -11,6 +11,7 @@
         "Mallai",
         "oauthserver",
         "Oidc",
+        "pinia",
         "samber",
         "sslmode",
         "stretchr",

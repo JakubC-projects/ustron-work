@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue';
-import {Status, Team, fillColors} from '../domain'
-import Helmet from './helmet.vue';
+import {Status, Team} from '../domain'
+import StatusBar from './status-bar.vue';
 
 const props =defineProps({
     status: {type: Object as PropType<Status>, required: true}
 })
 
-const maxHeight = 50
 
-const heightMultiplier = computed(() => {
-    let highestStatus = 0;
+const highestStatus = computed(() => {
+    let highestStatus = 1;
 
     for(const t of Object.values(Team)) {
         if (props.status[t] > highestStatus) {
@@ -18,7 +17,7 @@ const heightMultiplier = computed(() => {
         }
     }
 
-    return maxHeight / highestStatus
+    return highestStatus
 })
 
 </script>
@@ -28,11 +27,7 @@ const heightMultiplier = computed(() => {
         <h3 class="text-center text-2xl mb-6">Suma wpłat oraz godzin</h3>
         <div class="flex justify-between items-end">
             <div v-for="team in Team">
-                <div class="flex flex-col items-center justify-end">
-                    <p class="pb-1">{{ status[team] }}</p>
-                    <div class="w-14 mb-3 transition-[height]" :style="`background-color: ${fillColors[team]}; height: ${status[team] * heightMultiplier}px;`" ></div>
-                    <Helmet class="w-12" :team="team" />
-                </div>
+                <StatusBar :value="status[team]" :team="team" :height="status[team]/highestStatus" />
             </div>
         </div>
     </div>

@@ -25,12 +25,12 @@ const height = computed<number>(() => {
 </script>
 
 <template>
-    <svg width="73" height="51" viewBox="0 0 73 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <mask :id="`empty-${id}`" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" :y="0" width="73" :height="svgHeight-height">
-            <rect :y="0" width="73" :height="51-height" fill="#000000"/>
+    <svg class="" width="73" height="51" viewBox="0 0 73 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <mask :id="`empty-${id}`" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" :y="0" width="73" :height="51">
+            <rect class="duration-500 transition-[height]" :y="0" width="73" :height="51-height" fill="#000000"/>
         </mask>
-        <mask :id="`filled-${id}`" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" :y="svgHeight - height" width="73" :height="height">
-            <rect :y="svgHeight - height" width="73" :height="height" fill="#000000"/>
+        <mask :id="`filled-${id}`" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" :y="0" width="73" :height="51">
+            <rect class="duration-500 transition-[height,y]" :y="svgHeight - height" width="73" :height="height" fill="#000000"/>
         </mask>
         <g :mask="`url(#empty-${id})`">
             <path d="M65.6355 30.971C65.6355 30.971 66.0079 13.1262 52.0621 6.285C51.89 4.47205 49.9895 2.45709 49.9895 2.45709C49.9895 2.45709 29.776 -2.28639 18.0254 12.9308C12.8653 19.6131 9.59071 33.1879 9.59071 33.1879C9.59071 33.1879 1.04842 37.5671 2.43902 41.5672C3.92068 45.8305 18.3366 47.9481 22.4604 48.8703C32.7344 51.1701 46.8027 40.0688 59.4042 38.5671C68.3604 37.5009 68.6931 33.6068 65.6355 30.971Z" fill="white"/>
