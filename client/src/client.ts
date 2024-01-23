@@ -16,36 +16,52 @@ export async function createMyRegistration(r: CreateRegistration): Promise<Regis
         body: JSON.stringify(r),
       });
 
-    const registration = await response.json()
+    if (response.ok) {
+      return await response.json()
+    }
 
-    return registration
+    throw Error(await response.text())
 }
 
 
 export async function getMyRegistrations(): Promise<Registration[]> {
   const response = await fetch("/api/my-registrations");
-  const registrations = await response.json()
-  return registrations
+  if (response.ok) {
+    return await response.json()
+  }
+
+  throw Error(await response.text())
 }
 
 export async function getStatus(): Promise<Status> {
   const response = await fetch("/api/status");
-  const status = await response.json()
-  return status
+  if (response.ok) {
+    return await response.json()
+  }
+
+  throw Error(await response.text())
 }
 
 export async function getOnTrackStatus(): Promise<Status> {
   const response = await fetch("/api/on-track");
-  const status = await response.json()
-  return status
+  if (response.ok) {
+    return await response.json()
+  }
+
+  throw Error(await response.text())
 }
 
 export async function setOnTrackStatus(s: Status): Promise<void> {
-  await fetch("/api/on-track", {
+  const response = await fetch("/api/on-track", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(s),
   });
+  if (response.ok) {
+    return await response.json()
+  }
+
+  throw Error(await response.text())
 }

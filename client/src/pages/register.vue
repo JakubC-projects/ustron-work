@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { CreateRegistration, RegistrationType, Goal } from '../domain';
 import { createMyRegistration } from '../client';
 import { useRouter } from 'vue-router';
+import {useToast} from 'vue-toast-notification';
 import InputRadio from '../components/input-radio.vue';
 import ButtonTheme from '../components/button-theme.vue';
 import Rules from '../components/rules.vue';
@@ -14,16 +15,21 @@ const registration = ref<CreateRegistration>({
     hours: 0,
     paidSum: 0,
     goal: Goal.BUK,
-    comment: "",
+    description: "",
 })
 
 const router = useRouter()
+const toast = useToast()
 
 async function createNewRegistration() {
-
-  await createMyRegistration(registration.value)
-  
-  router.push({path: "/"})
+    try {
+        await createMyRegistration(registration.value)
+        toast.success("dodano rejestrację")
+        router.push({path: "/"})
+    } catch (err) {
+        const msg = err instanceof Error ? err.message : 'Unknown error'
+        toast.error(msg)
+    }
 }
 
 </script>
@@ -77,8 +83,8 @@ async function createNewRegistration() {
             </div>
         </div>
         <div class="px-5 py-6 ">
-            <p class="input-label">Komentarz</p>
-            <input v-model="registration.comment">
+            <p class="input-label">{{registration.type == RegistrationType.Work ? "Opis Pracy":"Komentarz"}}</p>
+            <input v-model="registration.description">
         </div>
         <div class="flex justify-center py-6">
             <ButtonTheme @click="createNewRegistration" label="Dodaj"/>

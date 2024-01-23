@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS "public"."registrations" (
 	"type" TEXT NOT NULL,
 	"date" DATE NOT NULL,
 	"hourly_wage" INT NULL,
-	"hours" INT NULL,
+	"hours" REAL NULL,
 	"paid_sum" INT NULL,
-	"comment" TEXT NULL,
+	"description" TEXT NULL,
 	CONSTRAINT "registrations_pkey" PRIMARY KEY (uid),
 	CONSTRAINT "registrations_persons_fk" FOREIGN KEY (person_id) REFERENCES persons(person_id)
 );

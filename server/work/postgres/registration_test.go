@@ -15,13 +15,13 @@ func TestCreateRegistration(t *testing.T) {
 	registrationService := getRegistrationService()
 
 	err := registrationService.CreateRegistration(context.Background(), work.Registration{
-		PersonID: 54513,
-		Uid:      uuid.New(),
-		Team:     work.TeamBlue,
-		Type:     work.RegistrationTypeMoney,
-		PaidSum:  1000,
-		Date:     date.DateOf(time.Now()),
-		Comment:  "Hello world",
+		PersonID:    54513,
+		Uid:         uuid.New(),
+		Team:        work.TeamBlue,
+		Type:        work.RegistrationTypeMoney,
+		PaidSum:     1000,
+		Date:        date.DateOf(time.Now()),
+		Description: "Hello world",
 	})
 	assert.NoError(t, err)
 }

@@ -26,7 +26,7 @@ export type CreateRegistration = {
     paidSum: number
 
     goal: Goal
-    comment: string
+    description: string
 }
 
 export type Registration = CreateRegistration & {

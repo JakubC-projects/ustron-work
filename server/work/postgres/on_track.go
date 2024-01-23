@@ -28,7 +28,7 @@ func (s *OnTrackService) GetOnTrackStatus(ctx context.Context) (work.Status, err
 	}
 	for rows.Next() {
 		var team work.Team
-		var status int
+		var status float32
 		err := rows.Scan(&team, &status)
 
 		if err != nil {

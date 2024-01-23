@@ -15,12 +15,12 @@ type Registration struct {
 	Type RegistrationType `json:"type"`
 	Date date.Date        `json:"date"`
 
-	HourlyWage int `json:"hourlyWage"`
-	Hours      int `json:"hours"`
+	HourlyWage int     `json:"hourlyWage"`
+	Hours      float32 `json:"hours"`
 
 	PaidSum int `json:"paidSum"`
 
-	Comment string `json:"comment"`
+	Description string `json:"description"`
 }
 
 type RegistrationType string
@@ -30,17 +30,11 @@ const (
 	RegistrationTypeWork  RegistrationType = "Work"
 )
 
-func (r Registration) Value() int {
-	switch r.Type {
-	case RegistrationTypeWork:
-		return r.HourlyWage * r.Hours
-	case RegistrationTypeMoney:
-		return r.PaidSum
-	}
-	return 0
+func (r Registration) Value() float32 {
+	return float32(r.HourlyWage)*r.Hours + float32(r.PaidSum)
 }
 
-type Status map[Team]int
+type Status map[Team]float32
 
 func NewStatus() Status {
 	return Status{

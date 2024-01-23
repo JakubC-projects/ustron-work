@@ -7,6 +7,9 @@ import ErrorPage from './pages/error.vue'
 import RegisterPage from './pages/register.vue'
 import AdminPage from './pages/admin.vue'
 import { createPinia } from 'pinia'
+import 'vue-toast-notification/dist/theme-bootstrap.css';
+import ToastPlugin from 'vue-toast-notification'
+
 
 
 // 2. Define some routes
@@ -33,5 +36,6 @@ const pinia = createPinia()
 const app = createApp(App)
 app.use(router);
 app.use(pinia);
+app.use(ToastPlugin);
 
 app.mount('#app')
