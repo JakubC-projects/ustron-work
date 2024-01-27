@@ -34,17 +34,6 @@ func (r Registration) Value() float32 {
 	return float32(r.HourlyWage)*r.Hours + float32(r.PaidSum)
 }
 
-type Status map[Team]float32
-
-func NewStatus() Status {
-	return Status{
-		TeamBlue:   0,
-		TeamGreen:  0,
-		TeamOrange: 0,
-		TeamRed:    0,
-	}
-}
-
 type RegistrationService interface {
 	GetPersonRegistrations(context.Context, int) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { Person, Registration, Status, newStatus } from "../domain";
-import { getMe, getMyRegistrations, getOnTrackStatus, getStatus } from "../client";
+import { GenderStatus, Person, Registration, Status, newGenderStatus, newStatus } from "../domain";
+import { getMe, getMyRegistrations, getOnTrackGenderStatus, getOnTrackStatus, getStatus } from "../client";
 import { useRouter } from "vue-router";
 
 type State = {
@@ -8,6 +8,7 @@ type State = {
     myRegistrations: Registration[]
     status: Status,
     onTrack: Status
+    onTrackGender: GenderStatus
 }
 
 const router = useRouter()
@@ -18,12 +19,13 @@ export const useStore = defineStore('main', {
             myRegistrations: [],
             status: newStatus(),
             onTrack: newStatus(),
+            onTrackGender: newGenderStatus(),
         }
     },
 
     actions: {
         async loadAll() {
-            return Promise.all([this.loadMe(), this.loadMyRegistrations(), this.loadStatus(), this.loadOnTrackStatus()])
+            return Promise.all([this.loadMe(), this.loadMyRegistrations(), this.loadStatus(), this.loadOnTrackStatus(), this.loadOnTrackGenderStatus()])
         },
 
         async loadMe() {
@@ -47,6 +49,9 @@ export const useStore = defineStore('main', {
         },
         async loadOnTrackStatus() {
             this.onTrack = await getOnTrackStatus()
+        },
+        async loadOnTrackGenderStatus() {
+            this.onTrackGender = await getOnTrackGenderStatus()
         }
     }
 })

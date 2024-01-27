@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="on-track px-5 py-8">
+    <div class="bg-[#21413E] px-5 py-8">
         <h3 class="text-center text-2xl mb-6">Procent bycia <span class="text-[#FF0] italic">ON TRACK</span></h3>
         <div class="flex justify-between items-end mb-8">
             <div v-for="team in Team">
@@ -25,10 +25,3 @@ defineProps({
         </div>
     </div>
 </template>
-
-<style>
-
-.on-track {
-    background-image: url("/src/assets/background.svg")
-}
-</style>

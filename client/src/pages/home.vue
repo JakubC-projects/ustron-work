@@ -6,6 +6,7 @@ import MyRegistrations from '../components/my-registrations.vue';
 import AdditionalInformation from '../components/additional-information.vue';
 import AddRegistrationButton from '../components/add-registration-button.vue';
 import {useStore} from '../store/store'
+import OnTrackGender from '../components/on-track-gender.vue';
 
 const state = useStore()
 
@@ -27,6 +28,7 @@ state.loadAll()
     </div>
     <StatusVue :status="state.status"/>
     <OnTrack :status="state.onTrack"/>
+    <OnTrackGender :status="state.onTrackGender"/>
     <div class="px-5 py-12">
       <MyRegistrations :registrations="state.myRegistrations" class="mb-3"/>
       <AdditionalInformation class="mb-3" />

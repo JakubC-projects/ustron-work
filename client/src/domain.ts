@@ -12,6 +12,11 @@ export enum Team {
     Orange = "Orange",
 }
 
+export enum Gender {
+    Male = "Male",
+    Female = "Female",
+}
+
 export enum Role {
     Base = "Base",
     Admin = "Admin",
@@ -55,6 +60,16 @@ export function newStatus(): Status {
         Red: 0
     }
 }
+
+export type GenderStatus = Record<Gender, number>
+
+export function newGenderStatus(): GenderStatus {
+    return {
+        [Gender.Male]: 0,
+        [Gender.Female]: 0,
+    }
+}
+
 
 export const fillColors: Record<Team, string> = {
     [Team.Blue]:
