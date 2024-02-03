@@ -6,9 +6,9 @@ export type Person = {
 
 export enum Team {
     Blue = "Blue",
-    Red = "Red",
     Green = "Green",
     Orange = "Orange",
+    Red = "Red",
 }
 
 export enum Gender {
