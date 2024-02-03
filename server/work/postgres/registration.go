@@ -108,7 +108,7 @@ func (s *RegistrationService) GetStatus(ctx context.Context) (work.Status, error
 
 func scanRegistrations(rows *sql.Rows) ([]work.Registration, error) {
 
-	var registrations []work.Registration
+	registrations := []work.Registration{}
 
 	for rows.Next() {
 		var r work.Registration
