@@ -24,7 +24,6 @@ func TestCreateUser(t *testing.T) {
 		PersonID:    54555,
 		DisplayName: "Test user",
 		Team:        work.TeamBlue,
-		Role:        work.RoleAdmin,
 	})
 	assert.NoError(t, err)
 }

@@ -5,7 +5,6 @@ import HomePage from "./pages/home.vue"
 import {createRouter, createWebHashHistory} from 'vue-router'
 import ErrorPage from './pages/error.vue'
 import RegisterPage from './pages/register.vue'
-import AdminPage from './pages/admin.vue'
 import { createPinia } from 'pinia'
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 import ToastPlugin from 'vue-toast-notification'
@@ -19,7 +18,6 @@ const routes = [
   { path: '/', component: HomePage },
   { path: '/error',component: ErrorPage },
   { path: '/register', component: RegisterPage },
-  { path: '/admin', component: AdminPage },
 ]
 
 // 3. Create the router instance and pass the `routes` option

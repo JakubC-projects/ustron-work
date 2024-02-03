@@ -8,7 +8,6 @@ type Person struct {
 	PersonID    int    `json:"personID"`
 	DisplayName string `json:"displayName"`
 	Team        Team   `json:"team"`
-	Role        Role   `json:"role"`
 }
 
 type PersonService interface {

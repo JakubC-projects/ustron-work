@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS "public"."persons" (
 	"display_name" TEXT NOT NULL,
 	"birth_date" DATE NOT NULL,
 	"team" TEXT NOT NULL,
-	"role" TEXT NOT NULL,
 	CONSTRAINT "persons_pkey" PRIMARY KEY (person_id)
 );
 

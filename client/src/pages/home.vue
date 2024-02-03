@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {  Role } from '../domain';
 import StatusVue from '../components/status.vue';
 import OnTrack from '../components/on-track.vue';
 import MyRegistrations from '../components/my-registrations.vue';
@@ -32,11 +31,6 @@ state.loadAll()
     <div class="px-5 py-12">
       <MyRegistrations :registrations="state.myRegistrations" class="mb-3"/>
       <AdditionalInformation class="mb-3" />
-      <RouterLink to="/admin" v-if="state.me?.role === Role.Admin">
-        <div class="bg-white text-black text-center w-full py-4 mb-3 text-xl rounded-lg">
-          Admin
-        </div>
-      </RouterLink>
       <a href="/logout" >
         <div class="bg-white text-black text-center w-full py-4 mb-3 text-xl rounded-lg">
           Wyloguj

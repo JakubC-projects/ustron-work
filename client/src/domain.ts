@@ -2,7 +2,6 @@ export type Person = {
     displayName: string
     personID: number
     team: Team
-    role: Role
 }
 
 export enum Team {
@@ -17,10 +16,6 @@ export enum Gender {
     Female = "Female",
 }
 
-export enum Role {
-    Base = "Base",
-    Admin = "Admin",
-}
 
 export type CreateRegistration = {
     type: RegistrationType

@@ -19,7 +19,6 @@ func TestMyRegistrations(t *testing.T) {
 		PersonID:    54512,
 		DisplayName: "Philly",
 		Team:        work.TeamBlue,
-		Role:        work.RoleSuperAdmin,
 	}
 
 	registration := work.Registration{

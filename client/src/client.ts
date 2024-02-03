@@ -52,19 +52,6 @@ export async function getOnTrackStatus(): Promise<Status> {
   return await response.json()
 }
 
-export async function setOnTrackStatus(s: Status): Promise<void> {
-  const response = await fetch("/api/on-track", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(s),
-  });
-  if (!response.ok) {
-    throw Error(await response.text())
-    ;
-  }
-}
 
 export async function getOnTrackGenderStatus(): Promise<GenderStatus> {
   const response = await fetch("/api/on-track-gender");
@@ -73,19 +60,4 @@ export async function getOnTrackGenderStatus(): Promise<GenderStatus> {
   }
 
   return await response.json()
-}
-
-export async function setOnTrackGenderStatus(s: GenderStatus): Promise<void> {
-  const response = await fetch("/api/on-track-gender", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(s),
-  });
-  if (!response.ok) {
-    throw Error(await response.text())
-    ;
-  }
-
 }

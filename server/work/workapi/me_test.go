@@ -18,7 +18,6 @@ func TestGetMe(t *testing.T) {
 		PersonID:    54512,
 		DisplayName: "Philly",
 		Team:        work.TeamBlue,
-		Role:        work.RoleSuperAdmin,
 	}
 	ps := mock.NewPersonService(person)
 
