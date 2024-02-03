@@ -20,7 +20,8 @@ type Registration struct {
 
 	PaidSum int `json:"paidSum"`
 
-	Description string `json:"description"`
+	Goal        RegistrationGoal `json:"goal"`
+	Description string           `json:"description"`
 }
 
 type RegistrationType string
@@ -28,6 +29,13 @@ type RegistrationType string
 const (
 	RegistrationTypeMoney RegistrationType = "Money"
 	RegistrationTypeWork  RegistrationType = "Work"
+)
+
+type RegistrationGoal string
+
+const (
+	RegistrationGoalBuk     RegistrationType = "BUK"
+	RegistrationGoalSamvirk RegistrationType = "Samvirk"
 )
 
 func (r Registration) Value() float32 {

@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS "public"."registrations" (
 	"hours" REAL NULL,
 	"paid_sum" INT NULL,
 	"description" TEXT NULL,
+	"goal" VARCHAR NOT NULL,
 	CONSTRAINT "registrations_pkey" PRIMARY KEY (uid),
 	CONSTRAINT "registrations_persons_fk" FOREIGN KEY (person_id) REFERENCES persons(person_id)
 );
