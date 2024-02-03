@@ -10,9 +10,6 @@ const props = defineProps({
     team: {type: String as PropType<Team>, required: true}
 })
 
-const valueInt = computed(() => {
-  return Math.round(props.value)
-})
 
 const heightInPx = computed(() => {
     return maxHeight * props.height
@@ -25,7 +22,7 @@ const maxHeight = 50
 <template>
     <div class="flex flex-col items-center justify-end">
         <div class="w-1 transition-[height] duration-500" :style="`height: ${maxHeight - heightInPx}px;`" ></div>
-        <p class="value pb-1"></p>{{ valueInt.toLocaleString("pl-PL") }}
+        <p class="value pb-1"></p>{{ value.toLocaleString("pl-PL", {maximumFractionDigits: 0}) }}
         <div class="w-[72px] mb-3 transition-[height] duration-500" :style="`background-color: ${fillColors[team]}; height: ${heightInPx}px;`" ></div>
         <Helmet class="w-12" :team="team" />
     </div>

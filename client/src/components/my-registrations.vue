@@ -71,7 +71,7 @@ function formatDate(date: string):string {
                 <div v-for="reg of registrations" class="py-2 border-b border-white">
                     <div class="flex justify-between font-bold gap-2">
                         <div class="text-ellipsis overflow-hidden whitespace-nowrap min-w-0">{{ reg.type === RegistrationType.Work ? reg.description : "Wpłata" }}</div>
-                        <div>{{(reg.hourlyWage * reg.hours + reg.paidSum).toFixed(2)}}</div>
+                        <div>{{(reg.hourlyWage * reg.hours + reg.paidSum).toLocaleString("pl-PL", {maximumFractionDigits: 2})}}</div>
                     </div>
                     <p>{{ formatDate(reg.date) }}</p>
                 </div>
