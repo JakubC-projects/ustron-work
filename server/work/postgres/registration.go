@@ -68,7 +68,7 @@ func (s *RegistrationService) GetTeamRegistrations(ctx context.Context, team wor
 }
 
 func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Registration) error {
-	_, err := s.db.ExecContext(ctx, "INSERT INTO registrations (uid, person_id, team, date, type, hourly_wage, hours, paid_sum, goal, description, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+	_, err := s.db.ExecContext(ctx, "INSERT INTO registrations (uid, person_id, team, date, type, hourly_wage, hours, paid_sum, goal, description, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
 		r.Uid, r.PersonID, r.Team, r.Date, r.Type, r.HourlyWage, r.Hours, r.PaidSum, r.Goal, r.Description, r.CreatedAt)
 
 	return err
