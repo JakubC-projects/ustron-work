@@ -56,6 +56,7 @@ func (a *Api) createMyRegistration(ctx context.Context, s work.Session, req *htt
 	registration.Uid = uuid.New()
 	registration.PersonID = s.PersonID
 	registration.Team = p.Team
+	registration.CreatedAt = time.Now()
 
 	if err := validateCreatedRegistration(registration); err != nil {
 		return registration, fmt.Errorf("validation failed: %w", err)

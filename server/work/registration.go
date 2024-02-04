@@ -2,6 +2,7 @@ package work
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jakubc-projects/ustron-work/server/work/date"
@@ -18,10 +19,12 @@ type Registration struct {
 	HourlyWage int     `json:"hourlyWage"`
 	Hours      float32 `json:"hours"`
 
-	PaidSum int `json:"paidSum"`
+	PaidSum float32 `json:"paidSum"`
 
 	Goal        RegistrationGoal `json:"goal"`
 	Description string           `json:"description"`
+
+	CreatedAt time.Time
 }
 
 type RegistrationType string
@@ -46,6 +49,5 @@ type RegistrationService interface {
 	GetPersonRegistrations(context.Context, int) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)
 	CreateRegistration(context.Context, Registration) error
-	UpdateRegistration(context.Context, Registration) error
 	GetStatus(context.Context) (Status, error)
 }

@@ -68,15 +68,8 @@ func (s *RegistrationService) GetTeamRegistrations(ctx context.Context, team wor
 }
 
 func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Registration) error {
-	_, err := s.db.ExecContext(ctx, "INSERT INTO registrations (uid, person_id, team, date, type, hourly_wage, hours, paid_sum, goal, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
-		r.Uid, r.PersonID, r.Team, r.Date, r.Type, r.HourlyWage, r.Hours, r.PaidSum, r.Goal, r.Description)
-
-	return err
-}
-
-func (s *RegistrationService) UpdateRegistration(ctx context.Context, r work.Registration) error {
-	_, err := s.db.ExecContext(ctx, "UPDATE registrations SET person_id=$2, team=$3, date=$3, type=$5 hourly_wage=$6, hours=$7, paid_sum=$8, goal=$9 description=$10 WHERE uid=$1",
-		r.Uid, r.PersonID, r.Team, r.Date, r.Type, r.HourlyWage, r.Hours, r.PaidSum, r.Goal, r.Description)
+	_, err := s.db.ExecContext(ctx, "INSERT INTO registrations (uid, person_id, team, date, type, hourly_wage, hours, paid_sum, goal, description, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+		r.Uid, r.PersonID, r.Team, r.Date, r.Type, r.HourlyWage, r.Hours, r.PaidSum, r.Goal, r.Description, r.CreatedAt)
 
 	return err
 }
@@ -85,8 +78,13 @@ func (s *RegistrationService) GetStatus(ctx context.Context) (work.Status, error
 	result := work.NewStatus()
 
 	rows, err := s.db.QueryContext(ctx,
-		`SELECT team, SUM(paid_sum + (hourly_wage * hours)) 
-		FROM registrations GROUP BY team`,
+		`WITH calc as (
+			SELECT r.team, (paid_sum + (hourly_wage * hours)) * ((DATE_PART('YEAR', AGE(r.date, p.birth_date)) < 18)::INT + 1) AS val 
+			FROM registrations r
+			LEFT JOIN persons p ON p.person_id = r.person_id
+		)
+		
+		SELECT team, SUM(val) FROM calc GROUP BY team`,
 	)
 	if err != nil {
 		return result, err
