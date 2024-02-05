@@ -42,7 +42,8 @@ export enum RegistrationType {
 
 export enum Goal {
     Samvirk = "Samvirk",
-    BUK = "BUK"
+    BUK = "BUK",
+    Maintenance = "Maintenance"
 }
 
 export type Status = Record<Team, number>

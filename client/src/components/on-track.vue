@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, computed } from 'vue';
 import {Status, Team} from '../domain'
 import OnTrackTeam from './on-track-team.vue';
 
-defineProps({
+const props = defineProps({
     status: {type: Object as PropType<Status>, required: true}
+})
+
+const areAllTeamOnTrack = computed(() => {
+    for(const teamStatus of Object.values(props.status)) {
+        if (teamStatus < 100) {
+            return false
+        }
+    }
+    return true
 })
 
 </script>
@@ -17,7 +26,7 @@ defineProps({
                 <OnTrackTeam :team="team" :value="status[team]"/>
             </div>
         </div>
-        <div class="flex justify-center">
+        <div v-if="!areAllTeamOnTrack" class="flex justify-center">
             <div class="border-2 rounded-md border-[#FF0] text-[#FF0] flex gap-3 justify-center items-center px-2 py-1">
             <img src="../assets/warn.svg"/>
             <p class="text-xs">Polska nie jest ON TRACK!</p>

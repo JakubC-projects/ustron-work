@@ -37,8 +37,9 @@ const (
 type RegistrationGoal string
 
 const (
-	RegistrationGoalBuk     RegistrationType = "BUK"
-	RegistrationGoalSamvirk RegistrationType = "Samvirk"
+	RegistrationGoalBuk         RegistrationType = "BUK"
+	RegistrationGoalSamvirk     RegistrationType = "Samvirk"
+	RegistrationGoalMaintenance RegistrationType = "Maintenance"
 )
 
 func (r Registration) Value() float32 {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { CreateRegistration, RegistrationType, Goal } from '../domain';
 import { createMyRegistration } from '../client';
 import { useRouter } from 'vue-router';
@@ -31,6 +31,18 @@ async function createNewRegistration() {
         toast.error(msg)
     }
 }
+
+watchEffect(() => {
+    if(registration.value.type === RegistrationType.Work ) {
+        registration.value.paidSum = 0
+        registration.value.goal = Goal.BUK
+    }
+    if (registration.value.type === RegistrationType.Money ) {
+        registration.value.hourlyWage = 0
+        registration.value.hours = 0
+        registration.value.goal = Goal.BUK
+    }
+})
 
 </script>
 
@@ -79,7 +91,8 @@ async function createNewRegistration() {
             <p class="input-label">Cel wpłaty</p>
             <div class="grid grid-cols-2 gap-4">
                 <InputRadio name="goal" v-model="registration.goal" :value="Goal.BUK" label="BUK"/>
-                <InputRadio name="goal" v-model="registration.goal" :value="Goal.Samvirk" label="Samvirk"/>
+                <InputRadio v-if="registration.type === RegistrationType.Work" name="goal" v-model="registration.goal" :value="Goal.Maintenance" label="Utrzymanie Zboru"/>
+                <InputRadio v-else name="goal" v-model="registration.goal" :value="Goal.Samvirk" label="Samvirk"/>
             </div>
         </div>
         <div class="px-5 py-6 ">
