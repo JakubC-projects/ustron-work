@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="background px-5 py-8">
+    <div class="background px-5 py-8 font-bold">
         <h3 class="text-center text-2xl mb-6">Dziewczyny vs Chłopaki</h3>
         <div class="grid grid-cols-2 items-end mb-8 text-2xl font-bold">
             <div class=" text-center mx-auto">

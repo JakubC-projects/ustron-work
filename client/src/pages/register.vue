@@ -47,28 +47,28 @@ watchEffect(() => {
 </script>
 
 <template>
-    <div>
+    <div class="px-5">
         <router-link to="/" class="p-6">
             <img class="mx-auto mb-3" src="../assets/logo.svg" />
         </router-link>
         <Rules />
-        <div class="px-5 py-6">
+        <div class=" py-6">
             <p class="input-label">Dodaj</p>
             <div class="grid grid-cols-2 gap-4">
                 <InputRadio name="type" v-model="registration.type" :value="RegistrationType.Work" label="Praca"/>
                 <InputRadio name="type" v-model="registration.type" :value="RegistrationType.Money" label="Wpłata"/>
             </div>
         </div>
-        <div class="px-5 py-6">
+        <div class="py-6">
             <p class="input-label">Data</p>
             <input type="date" v-model="registration.date">
         </div>
         <template v-if="registration.type == RegistrationType.Work">
-            <div class="px-5 py-6">
+            <div class=" py-6">
                 <p class="input-label">Ilość godzin (bez przerw)</p>
                 <input type="number" v-model="registration.hours">
             </div>
-            <div class="px-5 py-6">
+            <div class=" py-6">
                 <p class="input-label">Stawka godzinowa</p>
                 <input type="number" v-model="registration.hourlyWage">
                 <p class="opacity-75 text-base pt-2" >
@@ -80,14 +80,14 @@ watchEffect(() => {
             </div>
         </template>
         <template v-else>
-            <div class="px-5 py-6">
+            <div class="py-6">
                 <p class="input-label">Kwota wpłaty</p>
                 <input type="number" v-model="registration.paidSum">
                 <p class="opacity-75 text-base pt-2">*Sama liczba bez przecinków w PLN</p>
             </div>
         </template>
 
-        <div class="px-5 py-6">
+        <div class="py-6">
             <p class="input-label">Cel wpłaty</p>
             <div class="grid grid-cols-2 gap-4">
                 <InputRadio name="goal" v-model="registration.goal" :value="Goal.BUK" label="BUK"/>
@@ -95,7 +95,7 @@ watchEffect(() => {
                 <InputRadio v-else name="goal" v-model="registration.goal" :value="Goal.Samvirk" label="Samvirk"/>
             </div>
         </div>
-        <div class="px-5 py-6 ">
+        <div class="py-6 ">
             <p class="input-label">{{registration.type == RegistrationType.Work ? "Opis Pracy":"Komentarz"}}</p>
             <input v-model="registration.description">
         </div>

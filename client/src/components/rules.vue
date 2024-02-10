@@ -5,7 +5,7 @@ import rulesPDF from '../assets/rules.pdf'
 </script>
 
 <template>
-    <Dropdown class="mx-5" label="Informacje i reguły">
+    <Dropdown label="Informacje i reguły">
         <div class="px-8 pb-6">
             <p class="mb-4">
                 NOWOŚĆ 2024! Liczymy wpłaty oraz pieniądze wypracowane przez prace, 
