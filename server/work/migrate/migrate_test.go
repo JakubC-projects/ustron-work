@@ -7,21 +7,19 @@ import (
 )
 
 func TestMigrate(t *testing.T) {
-	personMap := NamePersonIdMap("../../../persons.json")
-	regs := ParseRegistrations("../../../registrations.csv", personMap)
+	personMap := NamePersonIdMap("data/persons.json")
+	regs := ParseRegistrations("data/registrations2.csv", personMap)
 
 	// fmt.Println(regs)
-
 	sql := RegsToSql(regs)
-
-	f, _ := os.Create("res.sql")
+	f, _ := os.Create("data/res.sql")
 
 	f.WriteString(sql)
 
 }
 
 func TestLoadPersonMap(t *testing.T) {
-	personMap := NamePersonIdMap("../../../persons.json")
+	personMap := NamePersonIdMap("data/persons.json")
 
 	fmt.Println(personMap)
 }

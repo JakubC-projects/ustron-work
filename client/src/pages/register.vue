@@ -11,9 +11,9 @@ import Rules from '../components/rules.vue';
 const registration = ref<CreateRegistration>({
     type:RegistrationType.Work,
     date: new Date().toISOString().split("T")[0],
-    hourlyWage: 0,
-    hours: 0,
-    paidSum: 0,
+    hourlyWage: NaN,
+    hours: NaN,
+    paidSum: NaN,
     goal: Goal.BUK,
     description: "",
 })
@@ -34,12 +34,12 @@ async function createNewRegistration() {
 
 watchEffect(() => {
     if(registration.value.type === RegistrationType.Work ) {
-        registration.value.paidSum = 0
+        registration.value.paidSum = NaN
         registration.value.goal = Goal.BUK
     }
     if (registration.value.type === RegistrationType.Money ) {
-        registration.value.hourlyWage = 0
-        registration.value.hours = 0
+        registration.value.hourlyWage = NaN
+        registration.value.hours = NaN
         registration.value.goal = Goal.BUK
     }
 })

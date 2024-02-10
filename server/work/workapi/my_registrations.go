@@ -58,7 +58,7 @@ func (a *Api) createMyRegistration(ctx context.Context, s work.Session, req *htt
 	registration.Team = p.Team
 	registration.CreatedAt = time.Now()
 
-	if err := validateCreatedRegistration(registration); err != nil {
+	if err := validateCreatedRegistration(&registration); err != nil {
 		return registration, fmt.Errorf("validation failed: %w", err)
 	}
 
@@ -79,33 +79,39 @@ func (a *Api) getMyRegistrations(ctx context.Context, s work.Session, req *http.
 	return registrations, nil
 }
 
-func validateCreatedRegistration(reg work.Registration) error {
+func validateCreatedRegistration(reg *work.Registration) error {
 	if reg.Date.After(civil.DateOf(time.Now())) {
 		return fmt.Errorf("registration date cannot be in the future")
 	}
 
-	if reg.HourlyWage < 0 {
-		return fmt.Errorf("hourly wage cannot be negative")
-	}
+	if reg.Type == work.RegistrationTypeWork {
+		if reg.HourlyWage <= 0 {
+			return fmt.Errorf("hourly wage has to be greater than 0")
+		}
+		if reg.Hours <= 0 {
+			return fmt.Errorf("hours cannot be negative")
+		}
+		if reg.HourlyWage > 200 {
+			return fmt.Errorf("too high hourly wage, nobody makes that much 🧐")
+		}
+		if reg.Hours > 24 {
+			return fmt.Errorf("too many hours, nobody works that much. Now go get some sleep 😴")
+		}
+		if len(reg.Description) == 0 {
+			return fmt.Errorf("please provide work description")
+		}
 
-	if reg.HourlyWage > 200 {
-		return fmt.Errorf("too high hourly wage, nobody makes that much 🧐")
-	}
+		reg.PaidSum = 0
+	} else {
+		if reg.PaidSum <= 0 {
+			return fmt.Errorf("paid amount has to be greater than 0")
+		}
+		if reg.PaidSum > 1000000 {
+			return fmt.Errorf("too high amount, nobody is that rich 🤑")
+		}
 
-	if reg.Hours < 0 {
-		return fmt.Errorf("hours cannot be negative")
-	}
-
-	if reg.Hours > 24 {
-		return fmt.Errorf("too many hours, nobody works that much. Now go get some sleep 😴")
-	}
-
-	if reg.PaidSum < 0 {
-		return fmt.Errorf("paid amount cannot be negative")
-	}
-
-	if reg.PaidSum > 1000000 {
-		return fmt.Errorf("too high amount, nobody is that rich 🤑")
+		reg.HourlyWage = 0
+		reg.Hours = 0
 	}
 
 	return nil
