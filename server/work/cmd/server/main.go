@@ -31,7 +31,7 @@ func main() {
 		panic(fmt.Errorf("cannot open db connection: %w", err))
 	}
 
-	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
+	logger := newLogger()
 
 	ps := postgres.NewPersonService(db)
 	ss := postgres.NewSessionService(db)
@@ -65,4 +65,20 @@ func main() {
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), mux); err != nil {
 		log.Fatalf("cannot start server: %s", err)
 	}
+}
+
+func newLogger() *slog.Logger {
+	jsonHandler := slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			switch a.Key {
+			case slog.MessageKey:
+				a.Key = "message"
+			case slog.LevelKey:
+				a.Key = "severity"
+			}
+			return a
+		},
+	})
+	return slog.New(jsonHandler)
 }
