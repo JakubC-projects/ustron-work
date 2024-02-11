@@ -3,8 +3,10 @@ package workapi
 import (
 	"context"
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/google/uuid"
@@ -20,8 +22,9 @@ func TestGetMe(t *testing.T) {
 		Team:        work.TeamBlue,
 	}
 	ps := mock.NewPersonService(person)
+	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
-	api := NewApi(ps, nil, nil)
+	api := NewApi(ps, nil, nil, logger)
 
 	t.Run("OK", func(t *testing.T) {
 		loggedInSession := work.SetSession(context.Background(), work.Session{

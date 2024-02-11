@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 
@@ -30,6 +31,8 @@ func main() {
 		panic(fmt.Errorf("cannot open db connection: %w", err))
 	}
 
+	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
+
 	ps := postgres.NewPersonService(db)
 	ss := postgres.NewSessionService(db)
 	rs := postgres.NewRegistrationService(db)
@@ -46,7 +49,7 @@ func main() {
 		},
 	)
 
-	api := workapi.NewApi(ps, rs, ts)
+	api := workapi.NewApi(ps, rs, ts, logger)
 
 	mux := http.NewServeMux()
 

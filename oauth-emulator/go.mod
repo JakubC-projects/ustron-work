@@ -1,6 +1,6 @@
 module github.com/jakubc-projects/ustron-work/oauth-emulator
 
-go 1.21.3
+go 1.22.0
 
 require (
 	github.com/gorilla/schema v1.2.1

@@ -1,5 +1,5 @@
 ## Build server
-FROM golang:1.21-bullseye as server
+FROM golang:1.22-bullseye as server
 WORKDIR /app
 COPY server/go.mod server/go.sum ./
 RUN go mod download

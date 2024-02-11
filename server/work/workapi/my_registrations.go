@@ -1,9 +1,7 @@
 package workapi
 
 import (
-	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -14,43 +12,29 @@ import (
 	"github.com/samber/lo"
 )
 
-func (a *Api) myRegistrations(w http.ResponseWriter, req *http.Request) {
+func (a *Api) createMyRegistration(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	s := lo.Must(work.GetSession(ctx))
 
-	var res any
-	var err error
-
-	switch req.Method {
-	case http.MethodPost:
-		res, err = a.createMyRegistration(ctx, s, req)
-	case http.MethodGet:
-		res, err = a.getMyRegistrations(ctx, s, req)
-
-	default:
-		err = errors.New("method not allowed")
-	}
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if res != nil {
-		json.NewEncoder(w).Encode(res)
-	}
-}
-
-func (a *Api) createMyRegistration(ctx context.Context, s work.Session, req *http.Request) (work.Registration, error) {
 	var registration work.Registration
 
 	p, err := a.personService.GetPerson(ctx, s.PersonID)
 	if err != nil {
-		return registration, fmt.Errorf("cannot get person: %w", err)
+		a.logger.ErrorContext(ctx, "cannot fetch person",
+			"personId", s.PersonID,
+			"error", err)
+		http.Error(w, "cannot fetch person", http.StatusInternalServerError)
+		return
+
 	}
 
 	if err := json.NewDecoder(req.Body).Decode(&registration); err != nil {
-		return registration, fmt.Errorf("cannot decode registration body: %w", err)
+		err := fmt.Errorf("cannot decode registration body: %w", err)
+		a.logger.WarnContext(ctx, "invalid request json",
+			"error", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+
 	}
 
 	registration.Uid = uuid.New()
@@ -59,24 +43,43 @@ func (a *Api) createMyRegistration(ctx context.Context, s work.Session, req *htt
 	registration.CreatedAt = time.Now()
 
 	if err := validateCreatedRegistration(&registration); err != nil {
-		return registration, fmt.Errorf("validation failed: %w", err)
+		err := fmt.Errorf("validation failed: %w", err)
+		a.logger.WarnContext(ctx, "registration validation failed",
+			"registration", registration,
+			"error", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+
 	}
 
 	if err := a.registrationService.CreateRegistration(ctx, registration); err != nil {
-		return registration, fmt.Errorf("cannot save registration: %w", err)
+		a.logger.ErrorContext(ctx, "cannot save registration",
+			"registration", registration,
+			"error", err)
+		http.Error(w, "cannot save registration", http.StatusInternalServerError)
+		return
+
 	}
 
-	return registration, nil
+	json.NewEncoder(w).Encode(registration)
 }
 
-func (a *Api) getMyRegistrations(ctx context.Context, s work.Session, req *http.Request) ([]work.Registration, error) {
+func (a *Api) getMyRegistrations(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+	s := lo.Must(work.GetSession(ctx))
 
 	registrations, err := a.registrationService.GetPersonRegistrations(ctx, s.PersonID)
 	if err != nil {
-		return registrations, fmt.Errorf("cannot get my registrations: %w", err)
+		a.logger.ErrorContext(ctx, "cannot fetch registrations",
+			"personId", s.PersonID,
+			"error", err,
+		)
+		http.Error(w, "cannot fetch registrations", http.StatusInternalServerError)
+		return
+
 	}
 
-	return registrations, nil
+	json.NewEncoder(w).Encode(registrations)
 }
 
 func validateCreatedRegistration(reg *work.Registration) error {

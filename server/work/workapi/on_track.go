@@ -2,7 +2,6 @@ package workapi
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -11,7 +10,9 @@ func (a *Api) onTrack(w http.ResponseWriter, req *http.Request) {
 
 	status, err := a.onTrackService.GetOnTrackStatus(ctx)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("cannot get on track status: %s", err), http.StatusInternalServerError)
+		a.logger.ErrorContext(ctx, "cannot get on track status",
+			"error", err)
+		http.Error(w, "cannot get on track status", http.StatusInternalServerError)
 		return
 	}
 
@@ -23,7 +24,9 @@ func (a *Api) onTrackGender(w http.ResponseWriter, req *http.Request) {
 
 	status, err := a.onTrackService.GetOnTrackGenderStatus(ctx)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("cannot get on track status: %s", err), http.StatusInternalServerError)
+		a.logger.ErrorContext(ctx, "cannot get on track gender status",
+			"error", err)
+		http.Error(w, "cannot get on track gender status", http.StatusInternalServerError)
 		return
 	}
 

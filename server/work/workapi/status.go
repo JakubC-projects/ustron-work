@@ -2,7 +2,6 @@ package workapi
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -11,7 +10,10 @@ func (a *Api) status(w http.ResponseWriter, req *http.Request) {
 
 	status, err := a.registrationService.GetStatus(ctx)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("cannot get my registrations: %s", err), http.StatusInternalServerError)
+
+		a.logger.ErrorContext(ctx, "cannot get work status",
+			"error", err)
+		http.Error(w, "cannot get work status", http.StatusInternalServerError)
 		return
 	}
 

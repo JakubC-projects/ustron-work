@@ -1,6 +1,6 @@
 module github.com/jakubc-projects/ustron-work/server
 
-go 1.21.5
+go 1.22.0
 
 require (
 	cloud.google.com/go v0.112.0
