@@ -23,7 +23,7 @@ const highestStatus = computed(() => {
 </script>
 
 <template>
-    <div class="px-5 pb-12 font-bold">
+    <div class="px-5 pt-3 pb-12 font-bold">
         <h3 class="text-center text-2xl mb-6">Suma wpłat oraz godzin</h3>
         <div class="flex justify-between items-end">
             <div v-for="team in Team">

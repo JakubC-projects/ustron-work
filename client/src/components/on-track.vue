@@ -27,7 +27,7 @@ const areAllTeamOnTrack = computed(() => {
             </div>
         </div>
         <div v-if="!areAllTeamOnTrack" class="flex justify-center">
-            <div class="border-2 rounded-md border-[#FF0] text-[#FF0] flex gap-3 justify-center items-center px-2 py-1">
+            <div class="text-[#FF0] flex gap-3 justify-center items-center px-2 py-1">
             <img src="../assets/warn.svg"/>
             <p class="text-xs">Polska nie jest ON TRACK!</p>
         </div>

@@ -48,9 +48,18 @@ watchEffect(() => {
 
 <template>
     <div class="px-5">
-        <router-link to="/" class="p-6">
-            <img class="mx-auto mb-3" src="../assets/logo.svg" />
+        <router-link to="/" c>
+            <div class="p-6 flex items-center mb-3">
+                <div class="flex-1">
+                    <img src="../assets/chevron.svg" class="rotate-90 ">
+                </div>
+                <img  src="../assets/logo.svg" />
+                <p class="flex-1"></p>
+            </div>
         </router-link>
+        <div class="text-center text-2xl font-bold italic mb-6 mx-auto w-64">
+            Rejestracja wpłat oraz godzin
+        </div>
         <Rules />
         <div class=" py-6">
             <p class="input-label">Dodaj</p>

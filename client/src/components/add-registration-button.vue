@@ -1,9 +1,8 @@
-<script setup lang="ts">
-defineProps({isOpen: {type: Boolean, default: false}})
-</script>
-
 <template>
-    <button class="bg-black p-4 rounded-full">
-        <img src="../assets/plus.svg" class="transition-transform" :class="isOpen ? 'rotate-45' : ''"/>
+    <button class="bg-white flex items-center justify-center gap-4 p-3 w-full rounded-2xl">
+        <img src="../assets/plus.svg"/>
+        <p class="text-black font-bold text-xl">
+            Dodaj wpłatę/godziny
+        </p>
     </button>
 </template>

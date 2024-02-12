@@ -20,19 +20,24 @@ state.loadAll()
 </script>
 
 <template>
-  <div class="">
+  <div>
     <div class="p-6">
       <img class="mx-auto mb-3" src="../assets/logo.svg" />
       <h1 class="text-white font-bold text-center text-5xl italic">Sezon 2!</h1>
+    </div>
+    <div class="px-5 py-6">
+      <RouterLink to="/register" >
+        <AddRegistrationButton />
+      </RouterLink>
     </div>
     <StatusVue :status="state.status"/>
     <OnTrack :status="state.onTrack"/>
     <OnTrackGender :status="state.onTrackGender"/>
     <div class="px-5 py-12">
       <MyRegistrations :registrations="state.myRegistrations" class="mb-3"/>
-      <Rules class="mb-3" />
+      <Rules class="mb-7" />
       <a href="/logout" >
-        <div class="bg-white text-black text-center w-full py-4 mb-3 text-xl rounded-lg font-bold">
+        <div class="border-2 text-center w-full py-4 mb-3 text-base rounded-lg font-bold">
           Wyloguj
         </div>
       </a>
@@ -41,8 +46,6 @@ state.loadAll()
           Reload
         </div> -->
     </div>
-    <RouterLink to="/register">
-      <AddRegistrationButton class="fixed right-5 bottom-5 hover:rotate-90 transition-transform"/>
-    </RouterLink>
+    
   </div>
 </template>
