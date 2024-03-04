@@ -88,3 +88,10 @@ export const strokeColors: Record<Team, string> = {
     [Team.Orange]:
          "#CC2B00"
 }
+
+export type Round = {
+    id: number,
+    startDate: string,
+    endDate: string,
+    freezeStartDate: string,
+}

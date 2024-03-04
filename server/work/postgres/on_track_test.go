@@ -11,12 +11,12 @@ import (
 func TestGetOnTrackStatus(t *testing.T) {
 	onTrackService := getOnTrackService()
 
-	reg, err := onTrackService.GetOnTrackStatus(context.Background())
+	reg, err := onTrackService.GetOnTrackStatus(context.Background(), 1)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, reg)
 
-	assert.Equal(t, float32(60), reg[work.TeamBlue])
+	assert.Equal(t, float32(20), reg[work.TeamBlue])
 }
 
 func getOnTrackService() *OnTrackService {

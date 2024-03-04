@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"cloud.google.com/go/civil"
@@ -68,7 +69,28 @@ func (a *Api) getMyRegistrations(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	s := lo.Must(work.GetSession(ctx))
 
-	registrations, err := a.registrationService.GetPersonRegistrations(ctx, s.PersonID)
+	roundIdStr := req.URL.Query().Get("roundId")
+	roundId, err := strconv.Atoi(roundIdStr)
+	if err != nil {
+		a.logger.ErrorContext(ctx, "invalid round id",
+			"roundId", roundIdStr,
+			"error", err,
+		)
+		http.Error(w, "cannot fetch registrations", http.StatusBadRequest)
+		return
+	}
+
+	round, err := a.roundService.GetRound(ctx, roundId)
+	if err != nil {
+		a.logger.ErrorContext(ctx, "cannot find round",
+			"roundId", roundIdStr,
+			"error", err,
+		)
+		http.Error(w, "cannot find round", http.StatusBadRequest)
+		return
+	}
+
+	registrations, err := a.registrationService.GetPersonRegistrations(ctx, s.PersonID, round)
 	if err != nil {
 		a.logger.ErrorContext(ctx, "cannot fetch registrations",
 			"personId", s.PersonID,

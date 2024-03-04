@@ -3,6 +3,6 @@ package work
 import "context"
 
 type OnTrackService interface {
-	GetOnTrackStatus(context.Context) (Status, error)
-	GetOnTrackGenderStatus(context.Context) (GenderStatus, error)
+	GetOnTrackStatus(ctx context.Context, roundId int) (Status, error)
+	GetOnTrackGenderStatus(ctx context.Context, roundId int) (GenderStatus, error)
 }

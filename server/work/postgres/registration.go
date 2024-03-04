@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jakubc-projects/ustron-work/server/work"
@@ -41,30 +42,26 @@ func (s *RegistrationService) GetRegistration(ctx context.Context, uid uuid.UUID
 	return regs[0], nil
 }
 
-func (s *RegistrationService) GetPersonRegistrations(ctx context.Context, personID int) ([]work.Registration, error) {
+func (s *RegistrationService) GetPersonRegistrations(ctx context.Context, personID int, round work.Round) ([]work.Registration, error) {
+	startDate := round.StartDate
+	endDate := round.EndDate
+	if round.FreezeStartDate.Valid && time.Now().Before(round.EndDate) {
+		endDate = round.FreezeStartDate.Time
+	}
+
 	rows, err := s.db.QueryContext(ctx,
 		`SELECT 
 		uid, person_id, team, type, date, hourly_wage, hours, paid_sum, goal, description
-		FROM registrations WHERE person_id = $1 ORDER BY date DESC`, personID)
+		FROM registrations 
+		WHERE person_id = $1 AND timestamp > $2 AND timestamp < $3
+		ORDER BY date DESC`,
+		personID, startDate, endDate)
 
 	if err != nil {
 		return nil, fmt.Errorf("sql error getting registrations: %w", err)
 	}
 
 	return scanRegistrations(rows)
-}
-
-func (s *RegistrationService) GetTeamRegistrations(ctx context.Context, team work.Team) ([]work.Registration, error) {
-	rows, err := s.db.QueryContext(ctx,
-		`SELECT 
-		uid, person_id, team, type, date, hourly_wage, hours, paid_sum, goal, description
-		FROM registrations WHERE team = $1`, team)
-	if err != nil {
-		return nil, fmt.Errorf("sql error getting Registration: %w", err)
-	}
-
-	return scanRegistrations(rows)
-
 }
 
 func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Registration) error {
@@ -74,18 +71,27 @@ func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Reg
 	return err
 }
 
-func (s *RegistrationService) GetStatus(ctx context.Context) (work.Status, error) {
+func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round) (work.Status, error) {
 	result := work.NewStatus()
+
+	startDate := round.StartDate
+	endDate := round.EndDate
+	if round.FreezeStartDate.Valid && time.Now().Before(round.EndDate) {
+		endDate = round.FreezeStartDate.Time
+	}
 
 	rows, err := s.db.QueryContext(ctx,
 		`WITH calc as (
 			SELECT r.team, (paid_sum + (hourly_wage * hours)) * ((DATE_PART('YEAR', AGE(r.date, p.birth_date)) < 18)::INT + 1) AS val 
 			FROM registrations r
+			WHERE  timestamp > $1 AND timestamp < $2
 			LEFT JOIN persons p ON p.person_id = r.person_id
 		)
 		
 		SELECT team, SUM(val) FROM calc GROUP BY team`,
+		startDate, endDate,
 	)
+
 	if err != nil {
 		return result, err
 	}
@@ -105,7 +111,6 @@ func (s *RegistrationService) GetStatus(ctx context.Context) (work.Status, error
 }
 
 func scanRegistrations(rows *sql.Rows) ([]work.Registration, error) {
-
 	registrations := []work.Registration{}
 
 	for rows.Next() {

@@ -1,3 +1,12 @@
+CREATE TABLE IF NOT EXISTS "public"."rounds" (
+	"id" int NOT NULL,
+	"start_date" timestamp NOT NULL,
+	"end_date" timestamp NOT NULL,
+	"freeze_start_date" timestamp NULL,
+
+	CONSTRAINT "rounds_pkey" PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS "public"."persons" (
 	"person_id" INT NOT NULL,
 	"display_name" TEXT NOT NULL,
@@ -25,6 +34,7 @@ CREATE TABLE IF NOT EXISTS "public"."registrations" (
 	"description" TEXT NULL,
 	"goal" VARCHAR NOT NULL,
 	"created_at" timestamp NOT NULL,
+	
 	CONSTRAINT "registrations_pkey" PRIMARY KEY (uid),
 	CONSTRAINT "registrations_persons_fk" FOREIGN KEY (person_id) REFERENCES persons(person_id)
 );
@@ -32,5 +42,9 @@ CREATE TABLE IF NOT EXISTS "public"."registrations" (
 CREATE TABLE IF NOT EXISTS "public"."on_track" (
 	"team" TEXT NOT NULL,
 	"status" INT NOT NULL,
-	CONSTRAINT "on_track_pkey" PRIMARY KEY (team)
+
+	"round_id" INT NOT NULL,
+
+	CONSTRAINT "on_track_pkey" PRIMARY KEY (team),
+	CONSTRAINT "on_track_round_fk" FOREIGN KEY (round_id) REFERENCES rounds(id)
 );

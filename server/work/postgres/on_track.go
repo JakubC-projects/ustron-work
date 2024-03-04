@@ -18,10 +18,12 @@ func NewOnTrackService(db *sql.DB) *OnTrackService {
 
 var _ work.OnTrackService = (*OnTrackService)(nil)
 
-func (s *OnTrackService) GetOnTrackStatus(ctx context.Context) (work.Status, error) {
+func (s *OnTrackService) GetOnTrackStatus(ctx context.Context, roundId int) (work.Status, error) {
 	result := work.NewStatus()
 
-	rows, err := s.db.QueryContext(ctx, "SELECT team, status FROM on_track WHERE team = ANY ($1)", pq.Array(work.Teams))
+	rows, err := s.db.QueryContext(ctx,
+		"SELECT team, status FROM on_track WHERE team = ANY ($1) AND round_id = $2",
+		pq.Array(work.Teams), roundId)
 
 	if err != nil {
 		return result, err
@@ -41,10 +43,12 @@ func (s *OnTrackService) GetOnTrackStatus(ctx context.Context) (work.Status, err
 	return result, nil
 }
 
-func (s *OnTrackService) GetOnTrackGenderStatus(ctx context.Context) (work.GenderStatus, error) {
+func (s *OnTrackService) GetOnTrackGenderStatus(ctx context.Context, roundId int) (work.GenderStatus, error) {
 	result := work.NewGenderStatus()
 
-	rows, err := s.db.QueryContext(ctx, "SELECT team, status FROM on_track WHERE team = ANY ($1)", pq.Array(work.Genders))
+	rows, err := s.db.QueryContext(ctx,
+		"SELECT team, status FROM on_track WHERE team = ANY ($1) AND round_id = $2",
+		pq.Array(work.Genders), roundId)
 
 	if err != nil {
 		return result, err

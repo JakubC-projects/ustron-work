@@ -10,4 +10,5 @@ func (a *Api) LoadRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/status", a.status)
 	mux.HandleFunc("GET /api/on-track", a.onTrack)
 	mux.HandleFunc("GET /api/on-track-gender", a.onTrackGender)
+	mux.HandleFunc("GET /api/rounds", a.getRounds)
 }

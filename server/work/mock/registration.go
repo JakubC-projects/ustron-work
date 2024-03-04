@@ -19,7 +19,7 @@ func NewRegistrationService(data ...work.Registration) *RegistrationService {
 	}
 }
 
-func (rs *RegistrationService) GetPersonRegistrations(ctx context.Context, personID int) ([]work.Registration, error) {
+func (rs *RegistrationService) GetPersonRegistrations(ctx context.Context, personID int, round work.Round) ([]work.Registration, error) {
 	return rs.S.Find(ctx, func(d work.Registration) bool { return d.PersonID == personID })
 }
 func (rs *RegistrationService) GetRegistration(ctx context.Context, id uuid.UUID) (work.Registration, error) {
@@ -32,7 +32,7 @@ func (rs *RegistrationService) UpdateRegistration(ctx context.Context, reg work.
 	return rs.S.Update(ctx, reg)
 }
 
-func (rs *RegistrationService) GetStatus(ctx context.Context) (work.Status, error) {
+func (rs *RegistrationService) GetStatus(ctx context.Context, round work.Round) (work.Status, error) {
 	status := work.NewStatus()
 
 	for _, r := range rs.S.Data {

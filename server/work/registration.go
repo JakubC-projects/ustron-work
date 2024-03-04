@@ -47,8 +47,8 @@ func (r Registration) Value() float32 {
 }
 
 type RegistrationService interface {
-	GetPersonRegistrations(context.Context, int) ([]Registration, error)
+	GetPersonRegistrations(ctx context.Context, personId int, round Round) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)
 	CreateRegistration(context.Context, Registration) error
-	GetStatus(context.Context) (Status, error)
+	GetStatus(ctx context.Context, round Round) (Status, error)
 }

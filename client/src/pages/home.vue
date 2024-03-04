@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import StatusVue from '../components/status.vue';
-import OnTrack from '../components/on-track.vue';
-import MyRegistrations from '../components/my-registrations.vue';
+import { ref } from 'vue';
 import AddRegistrationButton from '../components/add-registration-button.vue';
-import {useStore} from '../store/store'
-import OnTrackGender from '../components/on-track-gender.vue';
+import roundSelector from '../components/round-selector.vue';
 import Rules from '../components/rules.vue';
+import { Round } from '../domain';
+import { getRounds } from '../client';
+import round from '../components/round.vue';
 
-const state = useStore()
+const rounds = ref<Round[]>([])
+const currentRound = ref<Round>()
 
-state.loadAll()
+async function load() {
+  rounds.value = await getRounds()
 
-// function reload() {
-//   state.status = newStatus();
-//   state.onTrack = newStatus();
-//   setTimeout(state.loadAll, 1000)
-// }
+  currentRound.value = selectRound(rounds.value)
+}
+
+function selectRound(rounds: Round[]):Round {
+  return rounds[0]
+}
+
+load()
 
 </script>
 
@@ -30,22 +35,17 @@ state.loadAll()
         <AddRegistrationButton />
       </RouterLink>
     </div>
-    <StatusVue :status="state.status"/>
-    <OnTrack :status="state.onTrack"/>
-    <OnTrackGender :status="state.onTrackGender"/>
-    <div class="px-5 py-12">
-      <MyRegistrations :registrations="state.myRegistrations" class="mb-3"/>
-      <Rules class="mb-7" />
+
+    <roundSelector :rounds="rounds" v-model="currentRound"/>
+    
+    <round :round="currentRound" />
+
+    <Rules class="mb-7" />
       <a href="/logout" >
         <div class="border-2 text-center w-full py-4 mb-3 text-base rounded-lg font-bold">
           Wyloguj
         </div>
       </a>
-      
-      <!-- <div class="bg-white text-black text-center w-full py-4 mb-3 text-xl rounded-lg" @click="reload">
-          Reload
-        </div> -->
-    </div>
     
   </div>
 </template>

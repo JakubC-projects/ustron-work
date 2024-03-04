@@ -24,7 +24,7 @@ func TestGetMe(t *testing.T) {
 	ps := mock.NewPersonService(person)
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
-	api := NewApi(ps, nil, nil, logger)
+	api := NewApi(ps, nil, nil, nil, logger)
 
 	t.Run("OK", func(t *testing.T) {
 		loggedInSession := work.SetSession(context.Background(), work.Session{
