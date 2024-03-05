@@ -50,5 +50,5 @@ type RegistrationService interface {
 	GetPersonRegistrations(ctx context.Context, personId int, round Round) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)
 	CreateRegistration(context.Context, Registration) error
-	GetStatus(ctx context.Context, round Round) (Status, error)
+	GetStatus(ctx context.Context, round Round, team Team) (Status, error)
 }

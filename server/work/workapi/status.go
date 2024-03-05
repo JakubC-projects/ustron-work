@@ -4,10 +4,23 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+
+	"github.com/jakubc-projects/ustron-work/server/work"
+	"github.com/samber/lo"
 )
 
 func (a *Api) status(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
+
+	session := lo.Must(work.GetSession(ctx))
+	person, err := a.personService.GetPerson(ctx, session.PersonID)
+	if err != nil {
+		a.logger.ErrorContext(ctx, "cannot get person",
+			"error", err,
+		)
+		http.Error(w, "cannot get person", http.StatusInternalServerError)
+		return
+	}
 
 	roundIdStr := req.URL.Query().Get("roundId")
 	roundId, err := strconv.Atoi(roundIdStr)
@@ -30,7 +43,7 @@ func (a *Api) status(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	status, err := a.registrationService.GetStatus(ctx, round)
+	status, err := a.registrationService.GetStatus(ctx, round, person.Team)
 	if err != nil {
 
 		a.logger.ErrorContext(ctx, "cannot get work status",

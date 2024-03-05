@@ -2,15 +2,16 @@ package work
 
 import (
 	"context"
-	"database/sql"
 	"time"
+
+	"github.com/guregu/null/v5"
 )
 
 type Round struct {
-	Id              int          `json:"id"`
-	StartDate       time.Time    `json:"startDate"`
-	EndDate         time.Time    `json:"endDate"`
-	FreezeStartDate sql.NullTime `json:"freezeStartDate"`
+	Id              int       `json:"id"`
+	StartDate       time.Time `json:"startDate"`
+	EndDate         time.Time `json:"endDate"`
+	FreezeStartDate null.Time `json:"freezeStartDate"`
 }
 
 type RoundService interface {

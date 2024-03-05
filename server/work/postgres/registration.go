@@ -43,19 +43,13 @@ func (s *RegistrationService) GetRegistration(ctx context.Context, uid uuid.UUID
 }
 
 func (s *RegistrationService) GetPersonRegistrations(ctx context.Context, personID int, round work.Round) ([]work.Registration, error) {
-	startDate := round.StartDate
-	endDate := round.EndDate
-	if round.FreezeStartDate.Valid && time.Now().Before(round.EndDate) {
-		endDate = round.FreezeStartDate.Time
-	}
-
 	rows, err := s.db.QueryContext(ctx,
 		`SELECT 
 		uid, person_id, team, type, date, hourly_wage, hours, paid_sum, goal, description
 		FROM registrations 
-		WHERE person_id = $1 AND timestamp > $2 AND timestamp < $3
+		WHERE person_id = $1 AND created_at > $2 AND created_at < $3
 		ORDER BY date DESC`,
-		personID, startDate, endDate)
+		personID, round.StartDate, round.EndDate)
 
 	if err != nil {
 		return nil, fmt.Errorf("sql error getting registrations: %w", err)
@@ -71,25 +65,23 @@ func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Reg
 	return err
 }
 
-func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round) (work.Status, error) {
+func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round, team work.Team) (work.Status, error) {
 	result := work.NewStatus()
 
-	startDate := round.StartDate
-	endDate := round.EndDate
-	if round.FreezeStartDate.Valid && time.Now().Before(round.EndDate) {
-		endDate = round.FreezeStartDate.Time
+	otherTeamEndDate := round.EndDate
+	if round.FreezeStartDate.Valid && !time.Now().Before(round.EndDate) {
+		otherTeamEndDate = round.FreezeStartDate.Time
 	}
 
 	rows, err := s.db.QueryContext(ctx,
 		`WITH calc as (
 			SELECT r.team, (paid_sum + (hourly_wage * hours)) * ((DATE_PART('YEAR', AGE(r.date, p.birth_date)) < 18)::INT + 1) AS val 
 			FROM registrations r
-			WHERE  timestamp > $1 AND timestamp < $2
 			LEFT JOIN persons p ON p.person_id = r.person_id
+			WHERE  r.created_at > $1 AND (r.created_at < $2 OR (r.created_at < $3  AND r.team = $4))
 		)
-		
 		SELECT team, SUM(val) FROM calc GROUP BY team`,
-		startDate, endDate,
+		round.StartDate, otherTeamEndDate, round.EndDate, team,
 	)
 
 	if err != nil {

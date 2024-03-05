@@ -9,8 +9,6 @@ import { createPinia } from 'pinia'
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 import ToastPlugin from 'vue-toast-notification'
 
-
-
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.

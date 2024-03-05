@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go v0.112.0
 	github.com/coreos/go-oidc v2.2.1+incompatible
 	github.com/google/uuid v1.5.0
+	github.com/guregu/null/v5 v5.0.0
 	github.com/lib/pq v1.10.9
 	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.8.4
