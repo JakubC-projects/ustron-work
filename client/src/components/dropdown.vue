@@ -15,7 +15,7 @@ const isOpen = ref(false)
             <h3 class="font-bold text-xl">{{label}}</h3>
             <img src="../assets/chevron.svg" class="transition-transform" :class="isOpen ? 'rotate-180' : ''">
         </div>
-        <div class="transition-[max-height] overflow-hidden" :class="isOpen ? 'max-h-[1000px]' : 'max-h-0'">
+        <div class="transition-[max-height] overflow-y-scroll" :class="isOpen ? 'max-h-[512px]' : 'max-h-0'">
             <slot></slot>
         </div>
     </div>
