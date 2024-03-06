@@ -11,7 +11,7 @@ import (
 type Registration struct {
 	Uid      uuid.UUID `json:"uid"`
 	PersonID int       `json:"personID"`
-	Team     Team      `json:"team"`
+	Team     string    `json:"team"`
 
 	Type RegistrationType `json:"type"`
 	Date date.Date        `json:"date"`
@@ -50,5 +50,5 @@ type RegistrationService interface {
 	GetPersonRegistrations(ctx context.Context, personId int, round Round) ([]Registration, error)
 	GetRegistration(context.Context, uuid.UUID) (Registration, error)
 	CreateRegistration(context.Context, Registration) error
-	GetStatus(ctx context.Context, round Round, team Team) (Status, error)
+	GetStatus(ctx context.Context, round Round, team string) (Status, error)
 }

@@ -32,7 +32,7 @@ func (rs *RegistrationService) UpdateRegistration(ctx context.Context, reg work.
 	return rs.S.Update(ctx, reg)
 }
 
-func (rs *RegistrationService) GetStatus(ctx context.Context, round work.Round, team work.Team) (work.Status, error) {
+func (rs *RegistrationService) GetStatus(ctx context.Context, round work.Round, team string) (work.Status, error) {
 	status := work.NewStatus()
 
 	for _, r := range rs.S.Data {

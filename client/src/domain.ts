@@ -57,12 +57,25 @@ export function newStatus(): Status {
     }
 }
 
-export type GenderStatus = Record<Gender, number>
+export type OnTrackStatus = {
+    [Team.Blue]: number,
+    [Team.Green]: number,
+    [Team.Red]: number,
+    [Team.Orange]: number,
+    [Gender.Female]: number,
+    [Gender.Male]: number,
+    ["Poland"]: number,
+}
 
-export function newGenderStatus(): GenderStatus {
+export function newOnTrackStatus(): OnTrackStatus {
     return {
-        [Gender.Male]: 0,
+        [Team.Blue]: 0,
+        [Team.Green]: 0,
+        [Team.Red]: 0,
+        [Team.Orange]: 0,
         [Gender.Female]: 0,
+        [Gender.Male]: 0,
+        ["Poland"]: 0,
     }
 }
 

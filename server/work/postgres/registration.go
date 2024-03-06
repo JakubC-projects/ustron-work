@@ -65,7 +65,7 @@ func (s *RegistrationService) CreateRegistration(ctx context.Context, r work.Reg
 	return err
 }
 
-func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round, team work.Team) (work.Status, error) {
+func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round, team string) (work.Status, error) {
 	result := work.NewStatus()
 
 	otherTeamEndDate := round.EndDate
@@ -88,7 +88,7 @@ func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round, t
 		return result, err
 	}
 	for rows.Next() {
-		var team work.Team
+		var team string
 		var status float32
 		err := rows.Scan(&team, &status)
 

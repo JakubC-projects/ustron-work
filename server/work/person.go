@@ -7,7 +7,7 @@ import (
 type Person struct {
 	PersonID    int    `json:"personID"`
 	DisplayName string `json:"displayName"`
-	Team        Team   `json:"team"`
+	Team        string `json:"team"`
 }
 
 type PersonService interface {

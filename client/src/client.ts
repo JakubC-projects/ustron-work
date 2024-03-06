@@ -1,4 +1,4 @@
-import { CreateRegistration, Registration, Status, Person, GenderStatus, Round } from "./domain"
+import { CreateRegistration, Registration, Status, Person, Round, OnTrackStatus } from "./domain"
 
 export async function getMe(): Promise<Person> {
     const response = await fetch("/api/me")
@@ -51,18 +51,8 @@ export async function getStatus(roundId: number): Promise<Status> {
   return await response.json()
 }
 
-export async function getOnTrackStatus(roundId: number): Promise<Status> {
+export async function getOnTrackStatus(roundId: number): Promise<OnTrackStatus> {
   const response = await fetch(`/api/on-track?roundId=${roundId}`);
-  if (!response.ok) {
-    throw Error(await response.text())
-  }
-
-  return await response.json()
-}
-
-
-export async function getOnTrackGenderStatus(roundId: number): Promise<GenderStatus> {
-  const response = await fetch(`/api/on-track-gender?roundId=${roundId}`);
   if (!response.ok) {
     throw Error(await response.text())
   }

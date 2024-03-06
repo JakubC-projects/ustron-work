@@ -2,7 +2,7 @@
     <div class="text-center text-base mx-auto opacity-75 pb-4">{{roundStatus}}</div>
     <StatusVue :round="round" :status="status" :user-team="me.team"/>
     <OnTrack :status="onTrack"/>
-    <OnTrackGender :status="onTrackGender"/>
+    <OnTrackGender :status="onTrack"/>
     <div class="px-5 pt-12">
       <MyRegistrations :registrations="myRegistrations" class="mb-3"/>
     </div>
@@ -14,13 +14,12 @@ import OnTrack from '../components/on-track.vue';
 import MyRegistrations from '../components/my-registrations.vue';
 import OnTrackGender from '../components/on-track-gender.vue';
 import { PropType, computed, ref, watchEffect } from 'vue';
-import { GenderStatus, Person, Registration, Round, Status, newGenderStatus, newStatus } from '../domain';
-import { getMyRegistrations, getOnTrackGenderStatus, getOnTrackStatus, getStatus } from '../client';
+import { OnTrackStatus, Person, Registration, Round, Status, newOnTrackStatus, newStatus } from '../domain';
+import { getMyRegistrations, getOnTrackStatus, getStatus } from '../client';
 
 const myRegistrations = ref<Registration[]>([])
 const status = ref<Status>(newStatus())
-const onTrack = ref<Status>(newStatus())
-const onTrackGender = ref<GenderStatus>(newGenderStatus())
+const onTrack = ref<OnTrackStatus>(newOnTrackStatus())
 
 const props = defineProps({
   round: {type: Object as PropType<Round>, required: true},
@@ -28,13 +27,12 @@ const props = defineProps({
 })
 
 async function load(roundId: number) {
-  const [resRegs, resStatus, resOnTrack, resOnTrackGender] =
-    await Promise.all([getMyRegistrations(roundId), getStatus(roundId), getOnTrackStatus(roundId), getOnTrackGenderStatus(roundId)])
+  const [resRegs, resStatus, resOnTrack] =
+    await Promise.all([getMyRegistrations(roundId), getStatus(roundId), getOnTrackStatus(roundId)])
 
   myRegistrations.value = resRegs
   status.value = resStatus
   onTrack.value = resOnTrack
-  onTrackGender.value = resOnTrackGender
 }
 
 watchEffect(() => {

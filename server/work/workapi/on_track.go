@@ -30,28 +30,3 @@ func (a *Api) onTrack(w http.ResponseWriter, req *http.Request) {
 
 	json.NewEncoder(w).Encode(status)
 }
-
-func (a *Api) onTrackGender(w http.ResponseWriter, req *http.Request) {
-	ctx := req.Context()
-
-	roundIdStr := req.URL.Query().Get("roundId")
-	roundId, err := strconv.Atoi(roundIdStr)
-	if err != nil {
-		a.logger.ErrorContext(ctx, "invalid round id",
-			"roundId", roundIdStr,
-			"error", err,
-		)
-		http.Error(w, "cannot fetch registrations", http.StatusBadRequest)
-		return
-	}
-
-	status, err := a.onTrackService.GetOnTrackGenderStatus(ctx, roundId)
-	if err != nil {
-		a.logger.ErrorContext(ctx, "cannot get on track gender status",
-			"error", err)
-		http.Error(w, "cannot get on track gender status", http.StatusInternalServerError)
-		return
-	}
-
-	json.NewEncoder(w).Encode(status)
-}

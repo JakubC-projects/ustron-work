@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
-import {Gender, GenderStatus} from '../domain'
+import {Gender, OnTrackStatus} from '../domain'
 
 defineProps({
-    status: {type: Object as PropType<GenderStatus>, required: true}
+    status: {type: Object as PropType<OnTrackStatus>, required: true}
 })
 
 </script>

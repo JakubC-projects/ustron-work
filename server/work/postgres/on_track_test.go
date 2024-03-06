@@ -16,7 +16,7 @@ func TestGetOnTrackStatus(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, reg)
 
-	assert.Equal(t, float32(20), reg[work.TeamBlue])
+	assert.Equal(t, float32(20), reg[string(work.TeamBlue)])
 }
 
 func getOnTrackService() *OnTrackService {
