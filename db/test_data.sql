@@ -9,7 +9,9 @@ INSERT INTO persons (person_id, display_name, birth_date, team) VALUES
 
 
 INSERT INTO on_track (team, status, round_id) VALUES 
-    ('Blue', 20, 1),
+    ('Blue', 0, 1),
     ('Green', 0, 1),
-    ('Red', 40, 1),
-    ('Orange', 75, 1)
+    ('Red', 0, 1),
+    ('Orange', 0, 1),
+    ('Female', 0, 1),
+    ('Male', 0, 1);
