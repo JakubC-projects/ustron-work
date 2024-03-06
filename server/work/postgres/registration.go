@@ -69,7 +69,7 @@ func (s *RegistrationService) GetStatus(ctx context.Context, round work.Round, t
 	result := work.NewStatus()
 
 	otherTeamEndDate := round.EndDate
-	if round.FreezeStartDate.Valid && !time.Now().Before(round.EndDate) {
+	if round.FreezeStartDate.Valid && time.Now().Before(round.EndDate) {
 		otherTeamEndDate = round.FreezeStartDate.Time
 	}
 
